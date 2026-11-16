@@ -35,8 +35,12 @@ temp/
 
 # Dependencies and build output
 node_modules/
+.expo/
+.expo-home/
+.npm-cache/
 build/
 dist/
+dist-web/
 coverage/
 .dart_tool/
 .flutter-plugins

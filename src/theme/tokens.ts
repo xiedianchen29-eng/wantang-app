@@ -1,23 +1,13 @@
 export const colors = {
   canvas: '#FEFAEE',
+  canvasSoft: '#FFFCE9',
   brandBrown: '#774733',
   brandRed: '#731813',
-  heroAmber: '#BA6F00',
-  textPrimary: '#3D2118',
-  textSecondary: '#6F554B',
+  heroBrown: '#71400B',
+  textPrimary: '#3A1915',
+  textSecondary: '#614545',
+  muted: '#9D8B82',
+  tag: '#EFD4BC',
+  navBorder: '#EDDAC7',
   white: '#FFFFFF',
-} as const;
-
-export const spacing = {
-  xs: 4,
-  sm: 8,
-  md: 16,
-  lg: 24,
-  xl: 32,
-} as const;
-
-export const radius = {
-  card: 8,
-  section: 24,
-  pill: 999,
 } as const;
