@@ -1,0 +1,47 @@
+# Sensitive files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+credentials.*
+secrets.*
+google-services.json
+GoogleService-Info.plist
+
+# Operating system
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editors and local tools
+.vscode/
+.idea/
+*.swp
+*.swo
+.copilot/
+.codex/
+
+# Logs and temporary files
+*.log
+logs/
+tmp/
+temp/
+.cache/
+
+# Dependencies and build output
+node_modules/
+build/
+dist/
+coverage/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.gradle/
+local.properties
+DerivedData/
+Pods/

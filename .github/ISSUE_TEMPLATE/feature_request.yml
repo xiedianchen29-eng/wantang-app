@@ -1,0 +1,32 @@
+name: 功能或需求
+description: 记录一个需要讨论或实现的产品需求
+title: "[需求] "
+body:
+  - type: textarea
+    id: background
+    attributes:
+      label: 背景
+      description: 为什么需要这项功能？
+    validations:
+      required: true
+  - type: textarea
+    id: user_goal
+    attributes:
+      label: 用户目标
+      description: 用户希望完成什么？
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: 本次范围
+      description: 这次包含什么，不包含什么？
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 完成标准
+      description: 怎样判断这项工作已经完成？
+    validations:
+      required: true
