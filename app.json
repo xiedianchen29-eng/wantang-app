@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "name": "碗糖时序",
+    "slug": "wantang-app",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "wantang",
+    "userInterfaceStyle": "light",
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
