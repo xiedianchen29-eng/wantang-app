@@ -15,7 +15,13 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { bottomTabs, categories, products, storySlides } from '@/data/home';
+import {
+  bottomTabs,
+  categories,
+  type Category,
+  products,
+  storySlides,
+} from '@/data/home';
 import { colors } from '@/theme/tokens';
 
 const DESIGN_WIDTH = 370;
@@ -148,17 +154,48 @@ function CategoryGrid({ scale, fontScale }: { scale: number; fontScale: number }
         >
           <View style={{ width: 58 * scale, height: 54 * scale }}>
             <Image source={categoryCircle} style={StyleSheet.absoluteFill} contentFit="contain" />
-            <Image
-              source={category.image}
-              style={{ width: 58 * scale, height: 50 * scale }}
-              contentFit="contain"
-            />
+            <CategoryIcon category={category} scale={scale} />
           </View>
           <Text style={[styles.categoryLabel, { fontSize: 9.7 * fontScale }]}>
             {category.label}
           </Text>
         </Pressable>
       ))}
+    </View>
+  );
+}
+
+function CategoryIcon({ category, scale }: { category: Category; scale: number }) {
+  if (!category.iconLayout) {
+    return (
+      <Image
+        source={category.image}
+        style={{ width: 58 * scale, height: 50 * scale }}
+        contentFit="contain"
+      />
+    );
+  }
+
+  const visibleTargetHeight = 44;
+  const imageScale = visibleTargetHeight / category.iconLayout.visibleHeight;
+  const imageWidth = category.iconLayout.sourceWidth * imageScale;
+  const imageHeight = category.iconLayout.sourceHeight * imageScale;
+  const left = 29 - category.iconLayout.visibleCenterX * imageScale;
+  const top = 25 - category.iconLayout.visibleCenterY * imageScale;
+
+  return (
+    <View style={[styles.categoryIconViewport, { width: 58 * scale, height: 50 * scale }]}>
+      <Image
+        source={category.image}
+        style={{
+          position: 'absolute',
+          left: left * scale,
+          top: top * scale,
+          width: imageWidth * scale,
+          height: imageHeight * scale,
+        }}
+        contentFit="fill"
+      />
     </View>
   );
 }
@@ -482,6 +519,7 @@ const styles = StyleSheet.create({
   },
   categoryGrid: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start' },
   categoryItem: { width: '20%', alignItems: 'center', justifyContent: 'flex-start' },
+  categoryIconViewport: { position: 'relative', overflow: 'hidden' },
   categoryLabel: { color: colors.textSecondary, textAlign: 'center', marginTop: -1 },
   sectionHeader: {
     flexDirection: 'row',

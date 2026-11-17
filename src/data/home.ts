@@ -1,6 +1,19 @@
 import type { ImageContentPosition } from 'expo-image';
 
-export type Category = { id: string; label: string; image: number };
+export type CategoryIconLayout = {
+  sourceWidth: number;
+  sourceHeight: number;
+  visibleCenterX: number;
+  visibleCenterY: number;
+  visibleHeight: number;
+};
+
+export type Category = {
+  id: string;
+  label: string;
+  image: number;
+  iconLayout?: CategoryIconLayout;
+};
 export type Product = {
   id: string;
   name: string;
@@ -16,9 +29,42 @@ export const categories: Category[] = [
   { id: 'story', label: '品牌故事', image: require('../../assets/figma/home/f7b27.png') },
   { id: 'solar', label: '节气专栏', image: require('../../assets/figma/home/2ebf0.png') },
   { id: 'merch', label: '品牌周边', image: require('../../assets/figma/home/f9b72.png') },
-  { id: 'sale', label: '特价好物', image: require('../../assets/figma/home/92a28.png') },
-  { id: 'source', label: '原料溯源', image: require('../../assets/figma/home/51d53.png') },
-  { id: 'business', label: '企业合作', image: require('../../assets/figma/home/bc97d.png') },
+  {
+    id: 'sale',
+    label: '特价好物',
+    image: require('../../assets/figma/home/category-special-offer.png'),
+    iconLayout: {
+      sourceWidth: 100,
+      sourceHeight: 90,
+      visibleCenterX: 45.5,
+      visibleCenterY: 47,
+      visibleHeight: 75,
+    },
+  },
+  {
+    id: 'source',
+    label: '原料溯源',
+    image: require('../../assets/figma/home/category-source-strip.png'),
+    iconLayout: {
+      sourceWidth: 376,
+      sourceHeight: 104,
+      visibleCenterX: 183,
+      visibleCenterY: 51.5,
+      visibleHeight: 68,
+    },
+  },
+  {
+    id: 'business',
+    label: '企业合作',
+    image: require('../../assets/figma/home/category-business.png'),
+    iconLayout: {
+      sourceWidth: 106,
+      sourceHeight: 94,
+      visibleCenterX: 53,
+      visibleCenterY: 41,
+      visibleHeight: 75,
+    },
+  },
   { id: 'craft', label: '红糖工艺', image: require('../../assets/figma/home/50f78.png') },
 ];
 
