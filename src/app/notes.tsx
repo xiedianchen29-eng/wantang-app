@@ -29,7 +29,7 @@ const journalScene = require('../../assets/figma/notes/journal-scene.png');
 const journalRecipe = require('../../assets/figma/notes/journal-recipe.png');
 const journalTitle = require('../../assets/figma/notes/journal-title.svg');
 const journalLabels = require('../../assets/figma/notes/journal-labels.svg');
-const progressIcon = require('../../assets/figma/notes/503e2.svg');
+const progressCardArtwork = require('../../assets/figma/notes/progress-card.svg');
 const weekIcon = require('../../assets/figma/notes/2f35f.svg');
 const teaIcon = require('../../assets/figma/notes/c9a31.svg');
 const waterCircle = require('../../assets/figma/notes/46e08.svg');
@@ -160,41 +160,28 @@ function JournalEntry({ scale }: ScaleProps) {
   );
 }
 
-function ProgressCard({ scale, fontScale }: ScaleProps) {
+function ProgressCard({ scale }: ScaleProps) {
   const planned = useCallback(() => Alert.alert('进度卡片', '功能规划中'), []);
 
   return (
-    <View style={[styles.card, styles.absolute, { left: 9 * scale, top: 275 * scale, width: 353 * scale, height: 142 * scale, borderRadius: 8 * scale }]}>
-      <SectionTitle icon={progressIcon} title="进度卡片" action="" scale={scale} fontScale={fontScale} />
-      <LinearGradient
-        colors={['#9A3F32', '#6E1713']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={[styles.progressBody, { left: 9 * scale, top: 27 * scale, width: 335 * scale, height: 106 * scale, borderRadius: 12 * scale }]}
-      >
-        <View style={[styles.progressTop, { marginHorizontal: 16 * scale, marginTop: 12 * scale }]}>
-          <View>
-            <Text style={[styles.progressDay, { fontSize: 15 * fontScale }]}>第 3 天</Text>
-            <Text style={[styles.progressMeta, { fontSize: 8 * fontScale, marginTop: 1 * scale }]}>已完成 2 / 7 天</Text>
-          </View>
-          <Text style={[styles.progressPack, { fontSize: 9 * fontScale }]}>进行中的暖饮包</Text>
-        </View>
-        <Text style={[styles.progressDrink, { fontSize: 11 * fontScale, marginLeft: 16 * scale, marginTop: 8 * scale }]}>桂圆红枣暖饮 · 今日一包</Text>
-        <View style={[styles.progressTrack, { left: 16 * scale, top: 66 * scale, width: 297 * scale, height: 7.5 * scale, borderRadius: 4 * scale }]}>
-          <View style={[styles.progressFill, { width: 96 * scale, borderRadius: 4 * scale }]} />
-        </View>
-        <View style={[styles.progressBottom, { left: 16 * scale, right: 16 * scale, bottom: 10 * scale }]}>
-          <Pressable onPress={planned} hitSlop={8}>
-            <Text style={[styles.progressLink, { fontSize: 8 * fontScale }]}>我的记录 ›</Text>
-          </Pressable>
-          <Pressable
-            onPress={planned}
-            style={[styles.progressButton, { width: 51 * scale, height: 17 * scale, borderRadius: 9 * scale }]}
-          >
-            <Text style={[styles.progressButtonText, { fontSize: 7 * fontScale }]}>查看进度</Text>
-          </Pressable>
-        </View>
-      </LinearGradient>
+    <View style={[styles.absolute, { left: 9 * scale, top: 275 * scale, width: 353 * scale, height: 142 * scale }]}>
+      <Image
+        source={progressCardArtwork}
+        style={{ position: 'absolute', left: -9 * scale, top: -5 * scale, width: 370 * scale, height: 162 * scale }}
+        contentFit="fill"
+      />
+      <Pressable
+        onPress={planned}
+        accessibilityRole="button"
+        accessibilityLabel="查看我的记录"
+        style={{ position: 'absolute', left: 20 * scale, bottom: 8 * scale, width: 90 * scale, height: 28 * scale }}
+      />
+      <Pressable
+        onPress={planned}
+        accessibilityRole="button"
+        accessibilityLabel="查看进度"
+        style={{ position: 'absolute', right: 18 * scale, bottom: 8 * scale, width: 80 * scale, height: 28 * scale }}
+      />
     </View>
   );
 }
