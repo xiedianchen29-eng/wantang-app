@@ -3,7 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { bottomTabs } from '@/data/home';
@@ -12,14 +12,13 @@ const DESIGN_WIDTH_DP = 370;
 const DESIGN_BODY_HEIGHT_DP = 744;
 const MAX_CONTENT_WIDTH_DP = 430;
 
-const sugarcaneField = require('../../assets/figma/landmarks/raw-02.png');
+const heroBackground = require('../../assets/figma/landmarks/scenery-hero-background.svg');
 const brandBanner = require('../../assets/figma/gifts/occasion-corporate.png');
 const sugarStory = require('../../assets/figma/landmarks/raw-05.jpeg');
 const makerStory = require('../../assets/figma/landmarks/raw-18.jpeg');
 const caneStory = require('../../assets/figma/landmarks/raw-11.jpeg');
 const pearRecipe = require('../../assets/figma/landmarks/raw-14.png');
-const scanIcon = require('../../assets/figma/landmarks/scan-icon.svg');
-const searchIcon = require('../../assets/figma/landmarks/search-icon.svg');
+const scenerySearchBar = require('../../assets/figma/landmarks/scenery-search-bar.svg');
 
 function clamp(value: number, minimum: number, maximum: number) {
   return Math.min(Math.max(value, minimum), maximum);
@@ -44,7 +43,7 @@ export default function SceneryScreen() {
         >
           <View style={{ height: DESIGN_BODY_HEIGHT_DP * scale }}>
             <Hero scale={scale} />
-            <SearchBar scale={scale} fontScale={fontScale} />
+            <SearchBar scale={scale} />
             <Content scale={scale} fontScale={fontScale} />
           </View>
         </ScrollView>
@@ -56,27 +55,17 @@ export default function SceneryScreen() {
 
 function Hero({ scale }: { scale: number }) {
   return (
-    <View style={[styles.hero, { height: 345 * scale }]}>
-      <LinearGradient colors={['#E4B580', '#DDA96E', 'rgba(205,150,100,0)']} locations={[0, 0.32, 1]} style={StyleSheet.absoluteFill} />
-      <Image source={sugarcaneField} style={{ position: 'absolute', left: 0, top: 104 * scale, width: 370 * scale, height: 221 * scale }} contentFit="cover" contentPosition={{ left: '50%', top: '48%' }} />
-      <LinearGradient colors={['rgba(255,244,219,0.18)', 'rgba(255,244,219,0)']} start={{ x: 0.5, y: 0 }} end={{ x: 0.5, y: 1 }} style={{ position: 'absolute', left: 0, right: 0, top: 104 * scale, height: 221 * scale }} />
+    <View style={[styles.hero, { height: 358 * scale }]}>
+      <Image source={heroBackground} style={{ width: 370 * scale, height: 358 * scale }} contentFit="fill" />
     </View>
   );
 }
 
-function SearchBar({ scale, fontScale }: ScaleProps) {
-  const [query, setQuery] = useState('');
-  const search = useCallback(() => Alert.alert('搜索', query.trim() ? `“${query.trim()}”的内容正在规划中` : '请输入匠人、原料或食谱'), [query]);
-
+function SearchBar({ scale }: { scale: number }) {
   return (
-    <View style={[styles.searchBar, styles.absolute, { left: 18 * scale, top: 60 * scale, width: 336 * scale, height: 43 * scale, borderRadius: 22 * scale }]}>
-      <Image source={scanIcon} style={{ position: 'absolute', left: 10 * scale, top: 11 * scale, width: 21.4209 * scale, height: 20.7861 * scale }} contentFit="contain" />
-      <TextInput value={query} onChangeText={setQuery} placeholder="搜匠人、原料、食谱" placeholderTextColor="#7D6C62" style={[styles.searchInput, { left: 47 * scale, right: 94 * scale, fontSize: 12 * fontScale }]} returnKeyType="search" onSubmitEditing={search} />
-      <Pressable onPress={search} style={[styles.searchButton, { right: 8 * scale, top: 5 * scale, width: 72 * scale, height: 29 * scale, borderRadius: 15 * scale }]} accessibilityRole="button" accessibilityLabel="搜索">
-        <Image source={searchIcon} style={{ width: 12.6192 * scale, height: 12.2519 * scale, marginRight: 3 * scale }} contentFit="contain" />
-        <Text style={[styles.searchButtonText, { fontSize: 12 * fontScale }]}>搜索</Text>
-      </Pressable>
-    </View>
+    <Pressable onPress={() => Alert.alert('搜索', '搜索功能规划中')} style={[styles.absolute, { left: 18 * scale, top: 60 * scale, width: 336 * scale, height: 43 * scale }]} accessibilityRole="button" accessibilityLabel="搜索">
+      <Image source={scenerySearchBar} style={{ width: 336 * scale, height: 43 * scale }} contentFit="fill" />
+    </Pressable>
   );
 }
 
