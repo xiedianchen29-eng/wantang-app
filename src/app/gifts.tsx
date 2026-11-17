@@ -21,12 +21,7 @@ const DESIGN_WIDTH = 370;
 const DESIGN_BODY_HEIGHT = 744;
 const MAX_CONTENT_WIDTH = 430;
 
-const mural = require('../../assets/figma/notes/03bf1.png');
-const personalArtwork = require('../../assets/figma/gifts/e0033.png');
-const personalGift = require('../../assets/figma/gifts/d9958.png');
-const specialArtwork = require('../../assets/figma/gifts/c400e.png');
-const corporateArtwork = require('../../assets/figma/gifts/be963.png');
-const corporateGift = require('../../assets/figma/gifts/293af.png');
+const occasionBoard = require('../../assets/figma/gifts/occasion-board.png');
 const longanDrink = require('../../assets/figma/home/9f3c5.png');
 const gingerDrink = require('../../assets/figma/gifts/e3034.png');
 const tangYunGift = require('../../assets/figma/gifts/7ce74.png');
@@ -92,42 +87,16 @@ function GiftSearch({ scale, fontScale }: ScaleProps) {
   );
 }
 
-function GiftCategories({ scale, fontScale }: ScaleProps) {
+function GiftCategories({ scale }: ScaleProps) {
   const planned = useCallback((title: string) => Alert.alert(title, '功能规划中'), []);
 
   return (
-    <View style={[styles.card, styles.absolute, { left: 9 * scale, top: 117 * scale, width: 353 * scale, height: 189 * scale, borderRadius: 8 * scale }]}>
-      <Pressable onPress={() => planned('节庆礼盒')} style={[styles.categoryTile, { left: 9 * scale, top: 7 * scale, width: 86 * scale, height: 83 * scale, borderRadius: 4 * scale }]}>
-        <Image source={mural} style={StyleSheet.absoluteFill} contentFit="cover" contentPosition={{ left: '42%', top: '44%' }} />
-        <LinearGradient colors={['rgba(177,113,42,0.72)', 'rgba(217,150,81,0.32)']} style={StyleSheet.absoluteFill} />
-        <Text style={[styles.categoryTitleLight, { left: 9 * scale, top: 8 * scale, fontSize: 14 * fontScale }]}>节庆礼盒</Text>
-        <Text style={[styles.categorySubLight, { left: 9 * scale, top: 29 * scale, fontSize: 6 * fontScale }]}>精心手作 诚挚之礼</Text>
-      </Pressable>
-
-      <Pressable onPress={() => planned('个人伴手礼')} style={[styles.categoryTile, { left: 108 * scale, top: 7 * scale, width: 136 * scale, height: 83 * scale, borderRadius: 4 * scale }]}>
-        <Image source={personalArtwork} style={StyleSheet.absoluteFill} contentFit="cover" contentPosition={{ left: '48%', top: '45%' }} />
-        <LinearGradient colors={['rgba(194,137,58,0.56)', 'rgba(240,219,186,0)']} style={StyleSheet.absoluteFill} />
-        <Image source={personalGift} style={{ position: 'absolute', right: 0, bottom: 1 * scale, width: 85 * scale, height: 56 * scale }} contentFit="contain" />
-        <Text style={[styles.categoryTitleLight, { left: 9 * scale, top: 8 * scale, fontSize: 14 * fontScale }]}>个人伴手礼</Text>
-        <Text style={[styles.categorySubLight, { left: 9 * scale, top: 29 * scale, fontSize: 6 * fontScale }]}>精心手作 诚挚之礼</Text>
-      </Pressable>
-
-      <Pressable onPress={() => planned('礼品专区')} style={[styles.categoryTile, { right: 10 * scale, top: 7 * scale, width: 83 * scale, height: 175 * scale, borderRadius: 4 * scale }]}>
-        <Image source={specialArtwork} style={StyleSheet.absoluteFill} contentFit="cover" contentPosition={{ left: '50%', top: '45%' }} />
-        <View style={styles.specialOverlay} />
-        <Text style={[styles.specialTitle, { top: 27 * scale, fontSize: 20 * fontScale, lineHeight: 28 * fontScale }]}>礼{`\n`}品{`\n`}专{`\n`}区</Text>
-      </Pressable>
-
-      <Pressable onPress={() => planned('企业定制礼品')} style={[styles.categoryTile, { left: 9 * scale, bottom: 7 * scale, width: 235 * scale, height: 79 * scale, borderRadius: 4 * scale }]}>
-        <Image source={corporateArtwork} style={StyleSheet.absoluteFill} contentFit="cover" contentPosition={{ left: '46%', top: '50%' }} />
-        <LinearGradient colors={['rgba(210,171,115,0.9)', 'rgba(241,222,195,0)']} style={StyleSheet.absoluteFill} />
-        <Image source={corporateGift} style={{ position: 'absolute', right: 2 * scale, bottom: 0, width: 72 * scale, height: 72 * scale }} contentFit="contain" />
-        <Text style={[styles.corporateTitle, { left: 9 * scale, top: 5 * scale, fontSize: 14 * fontScale }]}>企业定制礼品</Text>
-        <Text style={[styles.corporateSub, { left: 11 * scale, top: 32 * scale, fontSize: 7.2 * fontScale }]}>天然原料 诚挚之礼</Text>
-        <View style={[styles.qualityBadge, { left: 11 * scale, bottom: 9 * scale, width: 52 * scale, height: 13 * scale, borderRadius: 7 * scale }]}>
-          <Text style={[styles.qualityText, { fontSize: 5.7 * fontScale }]}>高端品质</Text>
-        </View>
-      </Pressable>
+    <View style={[styles.absolute, { left: 9 * scale, top: 117 * scale, width: 353 * scale, height: 195 * scale }]}>
+      <Image source={occasionBoard} style={StyleSheet.absoluteFill} contentFit="fill" pointerEvents="none" />
+      <Pressable onPress={() => planned('节庆礼盒')} style={[styles.categoryHitArea, { left: 10 * scale, top: 5 * scale, width: 86 * scale, height: 83 * scale }]} />
+      <Pressable onPress={() => planned('个人伴手礼')} style={[styles.categoryHitArea, { left: 110 * scale, top: 5 * scale, width: 135 * scale, height: 83 * scale }]} />
+      <Pressable onPress={() => planned('礼品专区')} style={[styles.categoryHitArea, { left: 260 * scale, top: 5 * scale, width: 83 * scale, height: 175 * scale }]} />
+      <Pressable onPress={() => planned('企业定制礼品')} style={[styles.categoryHitArea, { left: 10 * scale, top: 100 * scale, width: 235 * scale, height: 80 * scale }]} />
     </View>
   );
 }
@@ -237,15 +206,7 @@ const styles = StyleSheet.create({
   searchButton: { position: 'absolute', top: 5, alignItems: 'center', justifyContent: 'center', backgroundColor: '#D5A06E' },
   searchButtonText: { color: '#FFFFFF', fontWeight: '700', letterSpacing: 1.1 },
   card: { backgroundColor: '#FFFEFB', shadowColor: '#412700', shadowOffset: { width: 0, height: 5 }, shadowOpacity: 0.06, shadowRadius: 10, elevation: 2, overflow: 'hidden' },
-  categoryTile: { position: 'absolute', overflow: 'hidden' },
-  categoryTitleLight: { position: 'absolute', color: '#FFF9EF', fontWeight: '500', letterSpacing: 0.7 },
-  categorySubLight: { position: 'absolute', color: '#FFFFFF', letterSpacing: 0.6 },
-  specialOverlay: { position: 'absolute', inset: 0, backgroundColor: 'rgba(177,113,42,0.8)' },
-  specialTitle: { position: 'absolute', left: 24, width: 35, color: '#FFF9EF', textAlign: 'center', letterSpacing: 1 },
-  corporateTitle: { position: 'absolute', color: '#523719', fontWeight: '500', letterSpacing: 0.7 },
-  corporateSub: { position: 'absolute', color: '#523719', letterSpacing: 0.7 },
-  qualityBadge: { position: 'absolute', justifyContent: 'center', alignItems: 'center', backgroundColor: '#BC8141' },
-  qualityText: { color: '#FFF9EF', fontWeight: '700', letterSpacing: 1.1 },
+  categoryHitArea: { position: 'absolute' },
   sectionHeader: { flexDirection: 'row', alignItems: 'center' },
   sectionTitle: { color: '#C28B3D', fontWeight: '700' },
   sectionSubtitle: { color: '#CE9C4E', marginLeft: 2 },
