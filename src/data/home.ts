@@ -105,7 +105,7 @@ export const bottomTabs: BottomTab[] = [
 ];
 
 export const storySlides = [
-  { id: 'slow-cook', quadrant: 'bottom-left' as const },
-  { id: 'harvest', quadrant: 'top-left' as const },
-  { id: 'pressing', quadrant: 'top-right' as const },
+  { id: 'slow-cook', image: require('../../assets/figma/home/story-slow-cook.png') },
+  { id: 'harvest', image: require('../../assets/figma/home/story-harvest.png') },
+  { id: 'pressing', image: require('../../assets/figma/home/story-pressing.png') },
 ];

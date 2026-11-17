@@ -13,7 +13,7 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
   bottomTabs,
@@ -30,7 +30,6 @@ const AUTOPLAY_MS = 4000;
 
 const heroBackground = require('../../assets/figma/home/home-hero-background.png');
 const categoryCircle = require('../../assets/figma/home/43334.svg');
-const storySheet = require('../../assets/figma/home/e0033.png');
 
 type StorySlide = (typeof storySlides)[number];
 
@@ -167,8 +166,8 @@ function StoryCarousel({
   const activeIndexRef = useRef(0);
   const listRef = useRef<FlatList<StorySlide>>(null);
   const slideWidth = contentWidth;
-  const storyWidth = 342 * scale;
-  const storyHeight = 112 * scale;
+  const storyWidth = (830.56006 / storySlides.length) * scale;
+  const storyHeight = 112.18696 * scale;
 
   const setIndex = useCallback((index: number) => {
     activeIndexRef.current = index;
@@ -196,17 +195,11 @@ function StoryCarousel({
     ({ item }: ListRenderItemInfo<StorySlide>) => (
       <View style={[styles.storySlide, { width: slideWidth, paddingHorizontal: 14 * scale }]}>
         <View style={[styles.storyCrop, { width: storyWidth, height: storyHeight }]}>
-          <StoryQuadrant quadrant={item.quadrant} width={storyWidth} />
-          {item.id === 'slow-cook' ? (
-            <View style={[styles.storyVerticalCopy, { left: 38 * scale, top: 13 * scale }]}>
-              <Text style={[styles.storyVerticalText, { fontSize: 8.9 * fontScale }]}>慢火熬糖</Text>
-              <Text style={[styles.storyVerticalText, { fontSize: 8.9 * fontScale }]}>甜意成金</Text>
-            </View>
-          ) : null}
+          <Image source={item.image} style={StyleSheet.absoluteFill} contentFit="contain" />
         </View>
       </View>
     ),
-    [fontScale, scale, slideWidth, storyHeight, storyWidth],
+    [scale, slideWidth, storyHeight, storyWidth],
   );
 
   return (
@@ -242,28 +235,6 @@ function StoryCarousel({
         ))}
       </View>
     </View>
-  );
-}
-
-function StoryQuadrant({ quadrant, width }: { quadrant: StorySlide['quadrant']; width: number }) {
-  const sheetWidth = width * 2;
-  const sheetHeight = sheetWidth / 2;
-  const cellHeight = sheetHeight / 2;
-  const offsets = useMemo(
-    () => ({
-      'top-left': { left: 0, top: 0 },
-      'top-right': { left: -width, top: 0 },
-      'bottom-left': { left: 0, top: -cellHeight },
-    }),
-    [cellHeight, width],
-  );
-
-  return (
-    <Image
-      source={storySheet}
-      style={[styles.storySheet, { width: sheetWidth, height: sheetHeight, ...offsets[quadrant] }]}
-      contentFit="fill"
-    />
   );
 }
 
@@ -456,9 +427,6 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     backgroundColor: colors.canvasSoft,
   },
-  storySheet: { position: 'absolute' },
-  storyVerticalCopy: { position: 'absolute', flexDirection: 'row', gap: 2 },
-  storyVerticalText: { width: 11, color: colors.brandRed, lineHeight: 10 },
   dots: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6 },
   dot: {},
   productRow: { flexDirection: 'row', paddingBottom: 10 },
