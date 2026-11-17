@@ -17,9 +17,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { bottomTabs } from '@/data/home';
 
-const DESIGN_WIDTH = 370;
-const DESIGN_BODY_HEIGHT = 744;
-const MAX_CONTENT_WIDTH = 430;
+// React Native style numbers are density-independent pixels (dp), not screen pixels.
+const DESIGN_WIDTH_DP = 370;
+const DESIGN_BODY_HEIGHT_DP = 744;
+const MAX_CONTENT_WIDTH_DP = 430;
 
 const occasionBoard = require('../../assets/figma/gifts/occasion-board.png');
 const longanDrink = require('../../assets/figma/home/9f3c5.png');
@@ -37,8 +38,8 @@ function clamp(value: number, minimum: number, maximum: number) {
 export default function GiftsScreen() {
   const window = useWindowDimensions();
   const insets = useSafeAreaInsets();
-  const width = Math.min(window.width, MAX_CONTENT_WIDTH);
-  const scale = width / DESIGN_WIDTH;
+  const width = Math.min(window.width, MAX_CONTENT_WIDTH_DP);
+  const scale = width / DESIGN_WIDTH_DP;
   const fontScale = clamp(scale, 0.92, 1.12);
   const navHeight = 78 * scale + insets.bottom;
 
@@ -49,9 +50,9 @@ export default function GiftsScreen() {
         <ScrollView
           bounces={false}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ minHeight: DESIGN_BODY_HEIGHT * scale + insets.top, paddingTop: insets.top, paddingBottom: navHeight }}
+          contentContainerStyle={{ minHeight: DESIGN_BODY_HEIGHT_DP * scale + insets.top, paddingTop: insets.top, paddingBottom: navHeight }}
         >
-          <View style={{ height: DESIGN_BODY_HEIGHT * scale }}>
+          <View style={{ height: DESIGN_BODY_HEIGHT_DP * scale }}>
             <GiftSearch scale={scale} fontScale={fontScale} />
             <GiftCategories scale={scale} fontScale={fontScale} />
             <SeasonalDrinks scale={scale} fontScale={fontScale} />

@@ -26,7 +26,8 @@ import {
 } from '@/data/home';
 import { colors } from '@/theme/tokens';
 
-const DESIGN_WIDTH = 370;
+// React Native style numbers are density-independent pixels (dp), not screen pixels.
+const DESIGN_WIDTH_DP = 370;
 const MAX_CONTENT_WIDTH = 430;
 const AUTOPLAY_MS = 4000;
 
@@ -43,7 +44,7 @@ export default function HomeScreen() {
   const window = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const contentWidth = Math.min(window.width, MAX_CONTENT_WIDTH);
-  const scale = contentWidth / DESIGN_WIDTH;
+  const scale = contentWidth / DESIGN_WIDTH_DP;
   const fontScale = clamp(scale, 0.92, 1.12);
   const navHeight = 64 * scale + insets.bottom;
 
