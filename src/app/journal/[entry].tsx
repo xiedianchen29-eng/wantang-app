@@ -3,6 +3,8 @@ import { StatusBar } from 'expo-status-bar';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+// React Native style numbers are density-independent pixels (dp), not screen pixels.
+
 const titles: Record<string, string> = {
   flavor: '口味手札',
   scene: '场景手札',
