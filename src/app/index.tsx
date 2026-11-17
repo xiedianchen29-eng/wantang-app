@@ -405,6 +405,10 @@ function BottomNavigation({
       router.replace('/notes');
       return;
     }
+    if (id === 'gifts') {
+      router.replace('/gifts');
+      return;
+    }
     Alert.alert(label, '功能规划中');
   }, [router]);
 
