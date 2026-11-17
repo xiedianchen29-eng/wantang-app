@@ -22,11 +22,10 @@ const MAX_CONTENT_WIDTH = 430;
 
 const segmentBackground = require('../../assets/figma/notes/13e40.svg');
 const segmentSelected = require('../../assets/figma/notes/370e2.svg');
-const noteArtwork = require('../../assets/figma/notes/03bf1.png');
-const noteFlavor = require('../../assets/figma/notes/64a20.png');
-const noteScene = require('../../assets/figma/notes/b1cb4.png');
-const noteRecipe = require('../../assets/figma/notes/df22b.png');
-const photoFrame = require('../../assets/figma/notes/25ade.svg');
+const journalArtwork = require('../../assets/figma/notes/journal-artwork.png');
+const journalPhotoStrip = require('../../assets/figma/notes/journal-photo-strip.png');
+const journalTitle = require('../../assets/figma/notes/journal-title.svg');
+const journalLabels = require('../../assets/figma/notes/journal-labels.svg');
 const progressIcon = require('../../assets/figma/notes/503e2.svg');
 const weekIcon = require('../../assets/figma/notes/2f35f.svg');
 const teaIcon = require('../../assets/figma/notes/c9a31.svg');
@@ -34,12 +33,6 @@ const waterCircle = require('../../assets/figma/notes/46e08.svg');
 const waterDrop = require('../../assets/figma/notes/3fc89.svg');
 const steamCircle = require('../../assets/figma/notes/bd801.svg');
 const steamIcon = require('../../assets/figma/notes/5cca2.svg');
-
-const NOTE_ENTRIES = [
-  { id: 'flavor', label: '口味', image: noteFlavor, position: { left: '50%', top: '58%' } as const },
-  { id: 'scene', label: '场景', image: noteScene, position: { left: '50%', top: '50%' } as const },
-  { id: 'recipe', label: '食谱', image: noteRecipe, position: { left: '50%', top: '50%' } as const },
-];
 
 const WEEK_DAYS = [
   { day: '一', date: '11', state: 'done' },
@@ -115,42 +108,44 @@ function PlanSelector({ scale, fontScale }: ScaleProps) {
   );
 }
 
-function JournalEntry({ scale, fontScale }: ScaleProps) {
-  const planned = useCallback((label: string) => Alert.alert(label, '功能规划中'), []);
+function JournalEntry({ scale }: ScaleProps) {
+  const planned = useCallback(() => Alert.alert('手札记录', '功能规划中'), []);
 
   return (
     <View style={[styles.absolute, { left: 18 * scale, top: 136 * scale, width: 335 * scale, height: 125 * scale }]}>
       <Pressable
         style={[styles.journalArtwork, { width: 94 * scale, height: 125 * scale }]}
-        onPress={() => planned('手札记录')}
+        onPress={planned}
       >
-        <Image source={noteArtwork} style={StyleSheet.absoluteFill} contentFit="cover" contentPosition={{ left: '42%', top: '50%' }} />
-        <View style={styles.artworkTint} />
-        <View style={[styles.artworkFrame, { borderRadius: 11 * scale }]} />
-        <Text style={[styles.verticalTitle, { fontSize: 15 * fontScale, lineHeight: 20 * fontScale }]}>手{`\n`}札{`\n`}记{`\n`}录</Text>
+        <Image source={journalArtwork} style={StyleSheet.absoluteFill} contentFit="fill" />
+        <Image
+          source={journalTitle}
+          style={{ position: 'absolute', left: 38 * scale, top: 17.5 * scale, width: 18 * scale, height: 90 * scale }}
+          contentFit="contain"
+        />
       </Pressable>
 
-      <LinearGradient
-        colors={['#B27A3D', '#DBA56F']}
-        start={{ x: 0, y: 0.5 }}
-        end={{ x: 1, y: 0.5 }}
+      <Pressable
+        onPress={planned}
         style={[styles.entryTray, { left: 105 * scale, width: 230 * scale, height: 125 * scale, borderRadius: 10 * scale }]}
       >
-        {NOTE_ENTRIES.map((entry, index) => (
-          <Pressable
-            key={entry.id}
-            style={{ position: 'absolute', left: (12 + index * 73) * scale, top: 10 * scale, width: 61 * scale }}
-            onPress={() => planned(entry.label)}
-          >
-            <View style={[styles.photo, { width: 61 * scale, height: 89 * scale }]}>
-              <Image source={entry.image} style={StyleSheet.absoluteFill} contentFit="cover" contentPosition={entry.position} />
-              <LinearGradient colors={['rgba(62,22,9,0.06)', 'rgba(62,22,9,0.2)']} style={StyleSheet.absoluteFill} />
-              <Image source={photoFrame} style={StyleSheet.absoluteFill} contentFit="fill" />
-            </View>
-            <Text style={[styles.entryLabel, { fontSize: 12 * fontScale, marginTop: 5 * scale }]}>{entry.label}</Text>
-          </Pressable>
-        ))}
-      </LinearGradient>
+        <LinearGradient
+          colors={['#B37B3D', '#D99650']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={StyleSheet.absoluteFill}
+        />
+        <Image
+          source={journalPhotoStrip}
+          style={{ position: 'absolute', left: 16 * scale, top: 11 * scale, width: 207 * scale, height: 89 * scale }}
+          contentFit="fill"
+        />
+        <Image
+          source={journalLabels}
+          style={{ position: 'absolute', left: 33 * scale, top: 105 * scale, width: 166 * scale, height: 10 * scale }}
+          contentFit="contain"
+        />
+      </Pressable>
     </View>
   );
 }
@@ -322,13 +317,8 @@ const styles = StyleSheet.create({
   segmentHalf: { position: 'absolute', top: 0, bottom: 0, width: '50%', alignItems: 'center', justifyContent: 'center' },
   selectedSegmentText: { color: '#FFF8EF', fontWeight: '700', letterSpacing: 0.4 },
   segmentText: { color: '#876F63', fontWeight: '500', letterSpacing: 0.4 },
-  journalArtwork: { position: 'absolute', left: 0, top: 0, overflow: 'hidden', borderTopLeftRadius: 13, borderBottomLeftRadius: 13 },
-  artworkTint: { position: 'absolute', inset: 0, backgroundColor: 'rgba(101,48,22,0.28)' },
-  artworkFrame: { position: 'absolute', inset: 0, borderWidth: 1, borderColor: 'rgba(255,244,231,0.85)' },
-  verticalTitle: { position: 'absolute', top: 17, left: 20, color: '#FFF4E7', fontWeight: '700', textAlign: 'center', textShadowColor: 'rgba(70,24,8,0.55)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 2 },
+  journalArtwork: { position: 'absolute', left: 0, top: 0, overflow: 'hidden' },
   entryTray: { position: 'absolute', top: 0, overflow: 'hidden' },
-  photo: { overflow: 'hidden', backgroundColor: '#8D5D40' },
-  entryLabel: { color: '#FFF6E9', textAlign: 'center', fontWeight: '600' },
   card: { backgroundColor: '#FFFEFC', shadowColor: '#8D664B', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.12, shadowRadius: 7, elevation: 2, overflow: 'hidden' },
   sectionTitleRow: { flexDirection: 'row', alignItems: 'center' },
   sectionTitle: { color: '#4D2924', fontWeight: '700' },
