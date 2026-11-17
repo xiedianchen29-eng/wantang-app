@@ -1,0 +1,6 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="61" height="89" viewBox="0 0 61 89" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="stroke0_0_40" fill="white">
+<path d="M56 0C56 2.76142 58.2386 5 61 5V84C58.2386 84 56 86.2386 56 89H5C5 86.2386 2.76142 84 0 84V5C2.76142 5 5 2.76142 5 0H56Z"/>
+</mask>
+<path id="Subtract" d="M56 0C56 2.76142 58.2386 5 61 5V84C58.2386 84 56 86.2386 56 89H5C5 86.2386 2.76142 84 0 84V5C2.76142 5 5 2.76142 5 0H56Z" stroke-width="2" stroke="#EEE0D1" mask="url(#stroke0_0_40)"/>
+</svg>

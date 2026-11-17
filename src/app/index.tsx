@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useRouter } from 'expo-router';
 
 import {
   bottomTabs,
@@ -397,10 +398,15 @@ function BottomNavigation({
   fontScale: number;
   bottomInset: number;
 }) {
+  const router = useRouter();
   const onTabPress = useCallback((id: string, label: string) => {
     if (id === 'home') return;
+    if (id === 'notes') {
+      router.replace('/notes');
+      return;
+    }
     Alert.alert(label, '功能规划中');
-  }, []);
+  }, [router]);
 
   return (
     <View
@@ -542,3 +548,4 @@ const styles = StyleSheet.create({
   bottomTab: { flex: 1, alignItems: 'center', justifyContent: 'flex-start' },
   bottomLabel: { marginTop: -5 },
 });
+
