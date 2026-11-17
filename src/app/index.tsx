@@ -410,6 +410,14 @@ function BottomNavigation({
       router.replace('/gifts');
       return;
     }
+    if (id === 'culture') {
+      router.replace('/scenery');
+      return;
+    }
+    if (id === 'profile') {
+      router.replace('/profile');
+      return;
+    }
     Alert.alert(label, '功能规划中');
   }, [router]);
 
@@ -553,4 +561,3 @@ const styles = StyleSheet.create({
   bottomTab: { flex: 1, alignItems: 'center', justifyContent: 'flex-start' },
   bottomLabel: { marginTop: -5 },
 });
-
