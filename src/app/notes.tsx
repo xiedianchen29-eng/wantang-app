@@ -23,7 +23,10 @@ const MAX_CONTENT_WIDTH = 430;
 const segmentBackground = require('../../assets/figma/notes/13e40.svg');
 const segmentSelected = require('../../assets/figma/notes/370e2.svg');
 const journalArtwork = require('../../assets/figma/notes/journal-artwork.png');
-const journalPhotoStrip = require('../../assets/figma/notes/journal-photo-strip.png');
+const journalTrayGradient = require('../../assets/figma/notes/journal-tray-gradient.png');
+const journalFlavor = require('../../assets/figma/notes/journal-flavor.png');
+const journalScene = require('../../assets/figma/notes/journal-scene.png');
+const journalRecipe = require('../../assets/figma/notes/journal-recipe.png');
 const journalTitle = require('../../assets/figma/notes/journal-title.svg');
 const journalLabels = require('../../assets/figma/notes/journal-labels.svg');
 const progressIcon = require('../../assets/figma/notes/503e2.svg');
@@ -33,6 +36,12 @@ const waterCircle = require('../../assets/figma/notes/46e08.svg');
 const waterDrop = require('../../assets/figma/notes/3fc89.svg');
 const steamCircle = require('../../assets/figma/notes/bd801.svg');
 const steamIcon = require('../../assets/figma/notes/5cca2.svg');
+
+const JOURNAL_ENTRIES = [
+  { id: 'flavor', image: journalFlavor },
+  { id: 'scene', image: journalScene },
+  { id: 'recipe', image: journalRecipe },
+] as const;
 
 const WEEK_DAYS = [
   { day: '一', date: '11', state: 'done' },
@@ -110,6 +119,7 @@ function PlanSelector({ scale, fontScale }: ScaleProps) {
 
 function JournalEntry({ scale }: ScaleProps) {
   const planned = useCallback(() => Alert.alert('手札记录', '功能规划中'), []);
+  const router = useRouter();
 
   return (
     <View style={[styles.absolute, { left: 18 * scale, top: 136 * scale, width: 335 * scale, height: 125 * scale }]}>
@@ -125,27 +135,27 @@ function JournalEntry({ scale }: ScaleProps) {
         />
       </Pressable>
 
-      <Pressable
-        onPress={planned}
+      <View
         style={[styles.entryTray, { left: 105 * scale, width: 230 * scale, height: 125 * scale, borderRadius: 10 * scale }]}
       >
-        <LinearGradient
-          colors={['#B37B3D', '#D99650']}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={StyleSheet.absoluteFill}
-        />
-        <Image
-          source={journalPhotoStrip}
-          style={{ position: 'absolute', left: 16 * scale, top: 11 * scale, width: 207 * scale, height: 89 * scale }}
-          contentFit="fill"
-        />
+        <Image source={journalTrayGradient} style={StyleSheet.absoluteFill} contentFit="fill" />
         <Image
           source={journalLabels}
-          style={{ position: 'absolute', left: 33 * scale, top: 105 * scale, width: 166 * scale, height: 10 * scale }}
+          style={{ position: 'absolute', left: 33 * scale, top: 110 * scale, width: 166 * scale, height: 10 * scale }}
           contentFit="contain"
         />
-      </Pressable>
+        {JOURNAL_ENTRIES.map((entry, index) => (
+          <Pressable
+            key={entry.id}
+            onPress={() => router.push(`/journal/${entry.id}`)}
+            accessibilityRole="button"
+            accessibilityLabel={`查看${entry.id === 'flavor' ? '口味' : entry.id === 'scene' ? '场景' : '食谱'}手札`}
+            style={{ position: 'absolute', left: (11.5 + index * 73) * scale, top: 17.5 * scale, width: 61 * scale, height: 102.5 * scale }}
+          >
+            <Image source={entry.image} style={{ width: 61 * scale, height: 89 * scale }} contentFit="fill" />
+          </Pressable>
+        ))}
+      </View>
     </View>
   );
 }
