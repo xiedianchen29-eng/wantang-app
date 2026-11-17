@@ -1,5 +1,4 @@
 import { Image } from 'expo-image';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useState } from 'react';
@@ -17,8 +16,8 @@ const brandBanner = require('../../assets/figma/gifts/occasion-corporate.png');
 const sugarStory = require('../../assets/figma/landmarks/raw-05.jpeg');
 const makerStory = require('../../assets/figma/landmarks/raw-18.jpeg');
 const caneStory = require('../../assets/figma/landmarks/raw-11.jpeg');
-const pearRecipe = require('../../assets/figma/landmarks/raw-14.png');
 const scenerySearchBar = require('../../assets/figma/landmarks/scenery-search-bar.svg');
+const sceneryRecipeCard = require('../../assets/figma/landmarks/scenery-recipe-card.svg');
 
 function clamp(value: number, minimum: number, maximum: number) {
   return Math.min(Math.max(value, minimum), maximum);
@@ -108,12 +107,7 @@ function Content({ scale, fontScale }: ScaleProps) {
 
       <SectionLabel title="风物食谱" top={312} scale={scale} fontScale={fontScale} onPress={() => planned('风物食谱')} />
       <Pressable onPress={() => planned('桂花红糖烤梨')} style={[styles.recipeCard, { left: 10 * scale, top: 341 * scale, width: 326 * scale, height: 76 * scale, borderRadius: 12 * scale }]}>
-        <LinearGradient colors={['#F5E1CF', '#E9C6A0']} style={StyleSheet.absoluteFill} />
-        <Image source={pearRecipe} style={{ position: 'absolute', left: 7 * scale, top: 6 * scale, width: 84 * scale, height: 65 * scale, borderRadius: 8 * scale }} contentFit="cover" contentPosition={{ left: '50%', top: '83%' }} />
-        <Text style={[styles.recipeEyebrow, { left: 104 * scale, top: 10 * scale, fontSize: 12 * fontScale }]}>今日推荐食谱</Text>
-        <Text style={[styles.recipeTitle, { left: 104 * scale, top: 28 * scale, fontSize: 16 * fontScale }]}>桂花红糖烤梨</Text>
-        <Text style={[styles.recipeSub, { left: 104 * scale, top: 51 * scale, fontSize: 12 * fontScale }]}>收藏食谱 · 去岁时礼事备料</Text>
-        <View style={[styles.recipeArrow, { right: 12 * scale, top: 26 * scale, width: 32 * scale, height: 32 * scale, borderRadius: 16 * scale }]}><Text style={[styles.recipeArrowText, { fontSize: 24 * fontScale }]}>›</Text></View>
+        <Image source={sceneryRecipeCard} style={{ width: 326 * scale, height: 76 * scale }} contentFit="fill" />
       </Pressable>
     </View>
   );
@@ -169,11 +163,6 @@ const styles = StyleSheet.create({
   storyTagText: { color: '#731813', fontWeight: '700', letterSpacing: 0.8 },
   storyTitle: { color: '#3A1915', fontWeight: '700' },
   recipeCard: { position: 'absolute', overflow: 'hidden' },
-  recipeEyebrow: { position: 'absolute', color: '#98502C', letterSpacing: 0.6 },
-  recipeTitle: { position: 'absolute', color: '#3A1915', fontWeight: '700', letterSpacing: 1.6 },
-  recipeSub: { position: 'absolute', color: '#96342A', letterSpacing: 0.6 },
-  recipeArrow: { position: 'absolute', alignItems: 'center', justifyContent: 'center', backgroundColor: '#D5A06E' },
-  recipeArrowText: { color: '#FFFFFF', marginTop: -4 },
   bottomNav: { position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 20, flexDirection: 'row', alignItems: 'flex-start', backgroundColor: '#FFFDF9', borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: '#E6D9D1' },
   bottomTab: { flex: 1, alignItems: 'center', justifyContent: 'flex-start' },
   bottomLabel: { marginTop: -5 },
