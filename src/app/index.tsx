@@ -1,4 +1,5 @@
 import { Image } from 'expo-image';
+import { LinearGradient } from 'expo-linear-gradient';
 import {
   Alert,
   FlatList,
@@ -163,61 +164,126 @@ function StoryCarousel({
   contentWidth: number;
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const activeIndexRef = useRef(0);
   const listRef = useRef<FlatList<StorySlide>>(null);
-  const slideWidth = contentWidth;
+  const renderedIndexRef = useRef(1);
+  const isDraggingRef = useRef(false);
+  const loopSlides = [storySlides[storySlides.length - 1], ...storySlides, storySlides[0]];
   const storyWidth = (830.56006 / storySlides.length) * scale;
   const storyHeight = 112.18696 * scale;
+  const storyGap = 4 * scale;
+  const itemWidth = storyWidth + storyGap;
+  const sideInset = (contentWidth - itemWidth) / 2;
+  const fadeWidth = (contentWidth - storyWidth) / 2;
 
-  const setIndex = useCallback((index: number) => {
-    activeIndexRef.current = index;
-    setActiveIndex(index);
-  }, []);
+  const jumpWithoutAnimation = useCallback(
+    (renderedIndex: number) => {
+      renderedIndexRef.current = renderedIndex;
+      requestAnimationFrame(() => {
+        listRef.current?.scrollToOffset({ offset: renderedIndex * itemWidth, animated: false });
+      });
+    },
+    [itemWidth],
+  );
 
   useEffect(() => {
+    jumpWithoutAnimation(renderedIndexRef.current);
+  }, [jumpWithoutAnimation]);
+
+  useEffect(() => {
+    let loopResetTimer: ReturnType<typeof setTimeout> | undefined;
     const timer = setInterval(() => {
-      const next = (activeIndexRef.current + 1) % storySlides.length;
-      listRef.current?.scrollToIndex({ index: next, animated: true });
-      setIndex(next);
+      if (isDraggingRef.current) return;
+      const next = renderedIndexRef.current + 1;
+      renderedIndexRef.current = next;
+      setActiveIndex((next - 1) % storySlides.length);
+      listRef.current?.scrollToOffset({ offset: next * itemWidth, animated: true });
+
+      if (next >= storySlides.length + 1) {
+        loopResetTimer = setTimeout(() => jumpWithoutAnimation(1), 600);
+      }
     }, AUTOPLAY_MS);
-    return () => clearInterval(timer);
-  }, [setIndex]);
+    return () => {
+      clearInterval(timer);
+      if (loopResetTimer) clearTimeout(loopResetTimer);
+    };
+  }, [itemWidth, jumpWithoutAnimation]);
 
   const onMomentumScrollEnd = useCallback(
     (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      const next = Math.round(event.nativeEvent.contentOffset.x / slideWidth);
-      setIndex(clamp(next, 0, storySlides.length - 1));
+      isDraggingRef.current = false;
+      const renderedIndex = Math.round(event.nativeEvent.contentOffset.x / itemWidth);
+
+      if (renderedIndex <= 0) {
+        setActiveIndex(storySlides.length - 1);
+        jumpWithoutAnimation(storySlides.length);
+        return;
+      }
+
+      if (renderedIndex >= storySlides.length + 1) {
+        setActiveIndex(0);
+        jumpWithoutAnimation(1);
+        return;
+      }
+
+      renderedIndexRef.current = renderedIndex;
+      setActiveIndex(renderedIndex - 1);
     },
-    [setIndex, slideWidth],
+    [itemWidth, jumpWithoutAnimation],
   );
 
   const renderStory = useCallback(
     ({ item }: ListRenderItemInfo<StorySlide>) => (
-      <View style={[styles.storySlide, { width: slideWidth, paddingHorizontal: 14 * scale }]}>
+      <View style={[styles.storySlide, { width: itemWidth }]}>
         <View style={[styles.storyCrop, { width: storyWidth, height: storyHeight }]}>
           <Image source={item.image} style={StyleSheet.absoluteFill} contentFit="contain" />
         </View>
       </View>
     ),
-    [scale, slideWidth, storyHeight, storyWidth],
+    [itemWidth, storyHeight, storyWidth],
   );
 
   return (
     <View style={{ marginTop: 2 * scale }}>
       <SectionHeader title="故事轮播" action="故事详情 ›" scale={scale} fontScale={fontScale} />
-      <FlatList
-        ref={listRef}
-        horizontal
-        pagingEnabled
-        data={storySlides}
-        keyExtractor={(item) => item.id}
-        renderItem={renderStory}
-        getItemLayout={(_, index) => ({ length: slideWidth, offset: slideWidth * index, index })}
-        onMomentumScrollEnd={onMomentumScrollEnd}
-        showsHorizontalScrollIndicator={false}
-        bounces={false}
-        accessibilityLabel="故事轮播，可左右滑动"
-      />
+      <View style={[styles.storyViewport, { height: storyHeight }]}>
+        <FlatList
+          ref={listRef}
+          horizontal
+          data={loopSlides}
+          keyExtractor={(item, index) => `${item.id}-${index}`}
+          renderItem={renderStory}
+          initialScrollIndex={1}
+          getItemLayout={(_, index) => ({ length: itemWidth, offset: itemWidth * index, index })}
+          contentContainerStyle={{ paddingHorizontal: sideInset }}
+          snapToInterval={itemWidth}
+          snapToAlignment="start"
+          decelerationRate="fast"
+          disableIntervalMomentum
+          onScrollBeginDrag={() => {
+            isDraggingRef.current = true;
+          }}
+          onMomentumScrollEnd={onMomentumScrollEnd}
+          showsHorizontalScrollIndicator={false}
+          bounces={false}
+          accessibilityLabel="故事轮播，可左右滑动并首尾循环"
+        />
+        <LinearGradient
+          pointerEvents="none"
+          colors={[colors.canvas, 'rgba(254, 250, 238, 0.72)', 'rgba(254, 250, 238, 0)']}
+          locations={[0, 0.55, 1]}
+          start={{ x: 0, y: 0.5 }}
+          end={{ x: 1, y: 0.5 }}
+          style={[styles.storyFade, { left: 0, width: fadeWidth, height: storyHeight }]}
+        />
+        <LinearGradient
+          pointerEvents="none"
+          colors={['rgba(254, 250, 238, 0)', 'rgba(254, 250, 238, 0.72)', colors.canvas]}
+          locations={[0, 0.45, 1]}
+          start={{ x: 0, y: 0.5 }}
+          end={{ x: 1, y: 0.5 }}
+          style={[styles.storyFade, { right: 0, width: fadeWidth, height: storyHeight }]}
+        />
+      </View>
       <View style={[styles.dots, { height: 20 * scale }]}>
         {storySlides.map((story, index) => (
           <View
@@ -420,6 +486,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: { color: colors.textPrimary, fontWeight: '700' },
   sectionAction: { color: colors.textSecondary },
+  storyViewport: { position: 'relative', overflow: 'hidden' },
   storySlide: { alignItems: 'center' },
   storyCrop: {
     position: 'relative',
@@ -427,6 +494,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     backgroundColor: colors.canvasSoft,
   },
+  storyFade: { position: 'absolute', top: 0, zIndex: 2 },
   dots: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6 },
   dot: {},
   productRow: { flexDirection: 'row', paddingBottom: 10 },
