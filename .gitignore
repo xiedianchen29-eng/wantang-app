@@ -43,6 +43,7 @@ build/
 dist/
 dist-web/
 dist-web-*/
+outputs/
 coverage/
 .dart_tool/
 .flutter-plugins

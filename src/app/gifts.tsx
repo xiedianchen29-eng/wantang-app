@@ -166,6 +166,8 @@ function BottomNavigation({ scale, fontScale, bottomInset }: ScaleProps & { bott
     if (id === 'gifts') return;
     if (id === 'home') { router.replace('/'); return; }
     if (id === 'notes') { router.replace('/notes'); return; }
+    if (id === 'culture') { router.replace('/scenery'); return; }
+    if (id === 'profile') { router.replace('/profile'); return; }
     Alert.alert(label, '功能规划中');
   }, [router]);
 
