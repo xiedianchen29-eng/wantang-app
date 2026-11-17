@@ -16,9 +16,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { bottomTabs } from '@/data/home';
 
-const DESIGN_WIDTH = 370;
-const DESIGN_BODY_HEIGHT = 744;
-const MAX_CONTENT_WIDTH = 430;
+// React Native style numbers are density-independent pixels (dp), not screen pixels.
+const DESIGN_WIDTH_DP = 370;
+const DESIGN_BODY_HEIGHT_DP = 744;
+const MAX_CONTENT_WIDTH_DP = 430;
 
 const segmentBackground = require('../../assets/figma/notes/13e40.svg');
 const segmentSelected = require('../../assets/figma/notes/370e2.svg');
@@ -60,8 +61,8 @@ function clamp(value: number, minimum: number, maximum: number) {
 export default function NotesScreen() {
   const window = useWindowDimensions();
   const insets = useSafeAreaInsets();
-  const width = Math.min(window.width, MAX_CONTENT_WIDTH);
-  const scale = width / DESIGN_WIDTH;
+  const width = Math.min(window.width, MAX_CONTENT_WIDTH_DP);
+  const scale = width / DESIGN_WIDTH_DP;
   const fontScale = clamp(scale, 0.92, 1.12);
   const navHeight = 78 * scale + insets.bottom;
 
@@ -77,12 +78,12 @@ export default function NotesScreen() {
           bounces={false}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
-            minHeight: DESIGN_BODY_HEIGHT * scale + insets.top,
+            minHeight: DESIGN_BODY_HEIGHT_DP * scale + insets.top,
             paddingTop: insets.top,
             paddingBottom: navHeight,
           }}
         >
-          <View style={{ height: DESIGN_BODY_HEIGHT * scale }}>
+          <View style={{ height: DESIGN_BODY_HEIGHT_DP * scale }}>
             <PlanSelector scale={scale} fontScale={fontScale} />
             <JournalEntry scale={scale} fontScale={fontScale} />
             <ProgressCard scale={scale} fontScale={fontScale} />
