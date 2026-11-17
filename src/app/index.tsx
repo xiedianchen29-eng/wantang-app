@@ -176,15 +176,18 @@ function CategoryIcon({ category, scale }: { category: Category; scale: number }
     );
   }
 
-  const visibleTargetHeight = 44;
-  const imageScale = visibleTargetHeight / category.iconLayout.visibleHeight;
+  const visibleTargetSize = 46;
+  const imageScale = Math.min(
+    visibleTargetSize / category.iconLayout.visibleWidth,
+    visibleTargetSize / category.iconLayout.visibleHeight,
+  );
   const imageWidth = category.iconLayout.sourceWidth * imageScale;
   const imageHeight = category.iconLayout.sourceHeight * imageScale;
   const left = 29 - category.iconLayout.visibleCenterX * imageScale;
-  const top = 25 - category.iconLayout.visibleCenterY * imageScale;
+  const top = 27 - category.iconLayout.visibleCenterY * imageScale;
 
   return (
-    <View style={[styles.categoryIconViewport, { width: 58 * scale, height: 50 * scale }]}>
+    <View style={[styles.categoryIconViewport, { width: 58 * scale, height: 54 * scale }]}>
       <Image
         source={category.image}
         style={{
