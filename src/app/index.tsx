@@ -28,12 +28,7 @@ const DESIGN_WIDTH = 370;
 const MAX_CONTENT_WIDTH = 430;
 const AUTOPLAY_MS = 4000;
 
-const heroBackground = require('../../assets/figma/home/9a7b9.png');
-const heroSugar = require('../../assets/figma/home/5bac8.png');
-const heroLogo = require('../../assets/figma/home/64b17.png');
-const heroLogoText = require('../../assets/figma/home/7ca70.png');
-const heroFlourishLeft = require('../../assets/figma/home/270ab.svg');
-const heroFlourishRight = require('../../assets/figma/home/2c56b.svg');
+const heroBackground = require('../../assets/figma/home/home-hero-background.png');
 const categoryCircle = require('../../assets/figma/home/43334.svg');
 const storySheet = require('../../assets/figma/home/e0033.png');
 
@@ -60,7 +55,7 @@ export default function HomeScreen() {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: navHeight + 12 }}
         >
-          <Hero scale={scale} fontScale={fontScale} />
+          <Hero scale={scale} />
           <View
             style={[
               styles.contentPanelShadow,
@@ -80,59 +75,15 @@ export default function HomeScreen() {
   );
 }
 
-function Hero({ scale, fontScale }: { scale: number; fontScale: number }) {
+function Hero({ scale }: { scale: number }) {
   return (
     <View style={[styles.hero, { height: 267 * scale }]}>
-      <Image source={heroBackground} style={StyleSheet.absoluteFill} contentFit="cover" />
-      <View style={styles.heroTint} />
-      <View style={[styles.heroBrand, { left: 15 * scale, top: 25 * scale }]}>
-        <Text style={[styles.heroKicker, { fontSize: 9 * fontScale }]}>万华食品</Text>
-        <Text style={[styles.heroBrandName, { fontSize: 15 * fontScale }]}>巧家红糖</Text>
-      </View>
-      <View style={[styles.heroLogo, { right: 12 * scale, top: 12 * scale }]}>
-        <Image
-          source={heroLogo}
-          style={{ width: 68 * scale, height: 35 * scale }}
-          contentFit="cover"
-          contentPosition={{ left: '50%', top: '39%' }}
-        />
-        <Image
-          source={heroLogoText}
-          style={{ width: 57 * scale, height: 16 * scale, marginTop: -4 * scale }}
-          contentFit="contain"
-        />
-      </View>
       <Image
-        source={heroSugar}
-        style={[
-          styles.heroSugar,
-          { width: 168 * scale, height: 130 * scale, left: 94 * scale, top: 35 * scale },
-        ]}
-        contentFit="contain"
+        source={heroBackground}
+        style={StyleSheet.absoluteFill}
+        contentFit="cover"
+        contentPosition={{ left: '50%', top: '0%' }}
       />
-      <View style={[styles.heroTaglineRow, { top: 166 * scale }]}>
-        <Image
-          source={heroFlourishLeft}
-          style={{ width: 65.5 * scale, height: 11.2 * scale }}
-          contentFit="contain"
-        />
-        <Text style={[styles.heroTagline, { fontSize: 12.8 * fontScale }]}>
-          一碗古法糖，暖暖每一天
-        </Text>
-        <Image
-          source={heroFlourishRight}
-          style={{ width: 65.5 * scale, height: 11.2 * scale }}
-          contentFit="contain"
-        />
-      </View>
-      <Text
-        style={[
-          styles.heroDescription,
-          { top: 194 * scale, fontSize: 5.2 * fontScale, lineHeight: 7 * fontScale },
-        ]}
-      >
-        源自金沙江畔，沿用三百年古法熬制{`\n`}零添加的小碗红糖
-      </Text>
     </View>
   );
 }
@@ -470,39 +421,6 @@ const styles = StyleSheet.create({
     position: 'relative',
     overflow: 'hidden',
     backgroundColor: colors.heroBrown,
-  },
-  heroTint: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    backgroundColor: 'rgba(133, 73, 10, 0.45)',
-  },
-  heroBrand: { position: 'absolute', zIndex: 3 },
-  heroKicker: { color: colors.white, letterSpacing: 0.8 },
-  heroBrandName: { color: colors.white, letterSpacing: 1.5 },
-  heroLogo: { position: 'absolute', alignItems: 'center', zIndex: 3 },
-  heroSugar: { position: 'absolute', zIndex: 2 },
-  heroTaglineRow: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    zIndex: 3,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 7,
-  },
-  heroTagline: { color: colors.white, letterSpacing: 1.2 },
-  heroDescription: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    zIndex: 3,
-    color: '#FFFBF2',
-    textAlign: 'center',
-    letterSpacing: 0.4,
   },
   contentPanelShadow: {
     backgroundColor: colors.canvas,
