@@ -55,10 +55,17 @@ export default function HomeScreen() {
           contentContainerStyle={{ paddingBottom: navHeight + 12 }}
         >
           <Hero scale={scale} fontScale={fontScale} />
-          <View style={[styles.contentPanel, { paddingTop: 18 * scale }]}>
-            <CategoryGrid scale={scale} fontScale={fontScale} />
-            <StoryCarousel scale={scale} fontScale={fontScale} contentWidth={contentWidth} />
-            <Products scale={scale} fontScale={fontScale} />
+          <View
+            style={[
+              styles.contentPanelShadow,
+              { minHeight: 579 * scale, marginTop: -24 * scale },
+            ]}
+          >
+            <View style={[styles.contentPanel, { minHeight: 579 * scale, paddingTop: 18 * scale }]}>
+              <CategoryGrid scale={scale} fontScale={fontScale} />
+              <StoryCarousel scale={scale} fontScale={fontScale} contentWidth={contentWidth} />
+              <Products scale={scale} fontScale={fontScale} />
+            </View>
           </View>
         </ScrollView>
         <BottomNavigation scale={scale} fontScale={fontScale} bottomInset={insets.bottom} />
@@ -69,7 +76,7 @@ export default function HomeScreen() {
 
 function Hero({ scale, fontScale }: { scale: number; fontScale: number }) {
   return (
-    <View style={[styles.hero, { height: 243 * scale }]}>
+    <View style={[styles.hero, { height: 267 * scale }]}>
       <Image source={heroBackground} style={StyleSheet.absoluteFill} contentFit="cover" />
       <View style={styles.heroTint} />
       <View style={[styles.heroBrand, { left: 15 * scale, top: 25 * scale }]}>
@@ -457,6 +464,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     letterSpacing: 0.4,
   },
+  contentPanelShadow: {
+    backgroundColor: colors.canvas,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    elevation: 10,
+    shadowColor: '#4E2100',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.37,
+    shadowRadius: 10,
+  },
   contentPanel: {
     overflow: 'hidden',
     backgroundColor: colors.canvas,
@@ -530,3 +547,4 @@ const styles = StyleSheet.create({
   bottomTab: { flex: 1, alignItems: 'center', justifyContent: 'flex-start' },
   bottomLabel: { marginTop: -5 },
 });
+
