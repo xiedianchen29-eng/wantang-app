@@ -5,6 +5,7 @@ export type CategoryIconLayout = {
   sourceHeight: number;
   visibleCenterX: number;
   visibleCenterY: number;
+  visibleWidth: number;
   visibleHeight: number;
 };
 
@@ -38,6 +39,7 @@ export const categories: Category[] = [
       sourceHeight: 90,
       visibleCenterX: 45.5,
       visibleCenterY: 47,
+      visibleWidth: 78,
       visibleHeight: 75,
     },
   },
@@ -50,6 +52,7 @@ export const categories: Category[] = [
       sourceHeight: 104,
       visibleCenterX: 183,
       visibleCenterY: 51.5,
+      visibleWidth: 83,
       visibleHeight: 68,
     },
   },
@@ -62,6 +65,7 @@ export const categories: Category[] = [
       sourceHeight: 94,
       visibleCenterX: 53,
       visibleCenterY: 41,
+      visibleWidth: 75,
       visibleHeight: 75,
     },
   },
