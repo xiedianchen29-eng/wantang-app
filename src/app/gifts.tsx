@@ -28,8 +28,9 @@ const gingerDrink = require('../../assets/figma/gifts/e3034.png');
 const tangYunGift = require('../../assets/figma/gifts/7ce74.png');
 const princessGift = require('../../assets/figma/gifts/555d7.png');
 const codonopsisGift = require('../../assets/figma/gifts/0c53a.png');
-const cupIcon = require('../../assets/figma/gifts/c9a31.svg');
-const giftIcon = require('../../assets/figma/gifts/dddac.svg');
+const seasonalDrinksHeader = require('../../assets/figma/gifts/seasonal-drinks-header.svg');
+const giftListHeader = require('../../assets/figma/gifts/gift-list-header.svg');
+const giftSearchBar = require('../../assets/figma/gifts/gift-search-bar.svg');
 
 function clamp(value: number, minimum: number, maximum: number) {
   return Math.min(Math.max(value, minimum), maximum);
@@ -71,19 +72,16 @@ function GiftSearch({ scale, fontScale }: ScaleProps) {
 
   return (
     <View style={[styles.searchBar, styles.absolute, { left: 9 * scale, top: 60 * scale, width: 353 * scale, height: 43 * scale, borderRadius: 22 * scale }]}>
-      <Text style={[styles.scanIcon, { left: 16 * scale, fontSize: 21 * fontScale }]}>⌗</Text>
+      <Image source={giftSearchBar} style={StyleSheet.absoluteFill} contentFit="fill" pointerEvents="none" />
       <TextInput
         value={query}
         onChangeText={setQuery}
-        placeholder="搜暖饮包、红糖、礼盒"
-        placeholderTextColor="#7D6C62"
-        style={[styles.searchInput, { left: 55 * scale, right: 91 * scale, fontSize: 12 * fontScale }]}
+        placeholder=""
+        style={[styles.searchInput, query ? styles.searchInputEditing : null, { left: 55 * scale, right: 91 * scale, fontSize: 12 * fontScale }]}
         returnKeyType="search"
         onSubmitEditing={search}
       />
-      <Pressable onPress={search} style={[styles.searchButton, { right: 7 * scale, width: 76 * scale, height: 29 * scale, borderRadius: 15 * scale }]}>
-        <Text style={[styles.searchButtonText, { fontSize: 12 * fontScale }]}>⌕ 搜索</Text>
-      </Pressable>
+      <Pressable onPress={search} style={[styles.searchButtonHitArea, { right: 7 * scale, top: 5 * scale, width: 76 * scale, height: 29 * scale }]} accessibilityRole="button" accessibilityLabel="搜索" />
     </View>
   );
 }
@@ -111,7 +109,8 @@ function SeasonalDrinks({ scale, fontScale }: ScaleProps) {
 
   return (
     <View style={[styles.card, styles.absolute, { left: 9 * scale, top: 316 * scale, width: 353 * scale, height: 213 * scale, borderRadius: 8 * scale }]}>
-      <SectionHeader title="当季暖饮" action="查看全部 ›" scale={scale} fontScale={fontScale} onPress={() => planned('当季暖饮')} />
+      <Image source={seasonalDrinksHeader} style={{ position: 'absolute', left: 11 * scale, top: 8 * scale, width: 331 * scale, height: 17 * scale }} contentFit="contain" pointerEvents="none" />
+      <Pressable onPress={() => planned('当季暖饮')} style={[styles.headerActionHitArea, { right: 8 * scale, top: 0, width: 56 * scale, height: 33 * scale }]} accessibilityRole="button" accessibilityLabel="查看全部" />
       {drinks.map((drink, index) => (
         <Pressable key={drink.name} onPress={() => planned(drink.name)} style={[styles.drinkCard, { left: (9 + index * 174) * scale, top: 39 * scale, width: 159 * scale, height: 164 * scale, borderRadius: 8 * scale }]}>
           <LinearGradient colors={['#D0A362', '#EFD5A9']} style={StyleSheet.absoluteFill} />
@@ -140,7 +139,8 @@ function GiftList({ scale, fontScale }: ScaleProps) {
 
   return (
     <View style={[styles.card, styles.absolute, { left: 9 * scale, top: 539 * scale, width: 353 * scale, height: 283 * scale, borderRadius: 8 * scale }]}>
-      <SectionHeader title="岁时送礼" action="礼盒详情 ›" scale={scale} fontScale={fontScale} onPress={() => planned('岁时送礼')} gift />
+      <Image source={giftListHeader} style={{ position: 'absolute', left: 9 * scale, top: 1 * scale, width: 335 * scale, height: 24 * scale }} contentFit="contain" pointerEvents="none" />
+      <Pressable onPress={() => planned('岁时送礼')} style={[styles.headerActionHitArea, { right: 8 * scale, top: 0, width: 56 * scale, height: 33 * scale }]} accessibilityRole="button" accessibilityLabel="礼盒详情" />
       {gifts.map((gift, index) => (
         <Pressable key={gift.name} onPress={() => planned(gift.name)} style={[styles.giftRow, { left: 11 * scale, top: (38 + index * 97) * scale, width: 335 * scale, height: 89 * scale, borderRadius: 12 * scale }]}>
           <LinearGradient colors={['#F5E2D0', '#E7CBB0']} style={StyleSheet.absoluteFill} />
@@ -156,17 +156,6 @@ function GiftList({ scale, fontScale }: ScaleProps) {
           <Text style={[styles.giftAction, { right: 15 * scale, bottom: 12 * scale, fontSize: 8 * fontScale }]}>点击了解 ›</Text>
         </Pressable>
       ))}
-    </View>
-  );
-}
-
-function SectionHeader({ title, action, scale, fontScale, onPress, gift = false }: ScaleProps & { title: string; action: string; onPress: () => void; gift?: boolean }) {
-  return (
-    <View style={[styles.sectionHeader, { height: 33 * scale, paddingHorizontal: 10 * scale }]}>
-      <Image source={gift ? giftIcon : cupIcon} style={{ width: 17 * scale, height: 17 * scale, marginRight: 3 * scale }} contentFit="contain" />
-      <Text style={[styles.sectionTitle, { fontSize: 14 * fontScale }]}>{title}</Text>
-      <Text style={[styles.sectionSubtitle, { fontSize: 10 * fontScale }]}>· 品牌好物向您推荐</Text>
-      <Pressable onPress={onPress} style={styles.sectionActionPress} hitSlop={8}><Text style={[styles.sectionAction, { fontSize: 10 * fontScale }]}>{action}</Text></Pressable>
     </View>
   );
 }
@@ -201,18 +190,13 @@ const styles = StyleSheet.create({
   screen: { flex: 1, alignItems: 'center', backgroundColor: '#FCFAF8' },
   page: { flex: 1, overflow: 'hidden' },
   absolute: { position: 'absolute' },
-  searchBar: { borderWidth: 2, borderColor: '#F0E4D9', backgroundColor: '#FFFFFF', justifyContent: 'center' },
-  scanIcon: { position: 'absolute', color: '#D5A06E', top: 7 },
-  searchInput: { position: 'absolute', height: '100%', color: '#614545', letterSpacing: 1.2 },
-  searchButton: { position: 'absolute', top: 5, alignItems: 'center', justifyContent: 'center', backgroundColor: '#D5A06E' },
-  searchButtonText: { color: '#FFFFFF', fontWeight: '700', letterSpacing: 1.1 },
+  searchBar: { justifyContent: 'center' },
+  searchInput: { position: 'absolute', height: '100%', color: '#614545', letterSpacing: 1.2, padding: 0 },
+  searchInputEditing: { backgroundColor: '#FFFFFF' },
+  searchButtonHitArea: { position: 'absolute' },
   card: { backgroundColor: '#FFFEFB', shadowColor: '#412700', shadowOffset: { width: 0, height: 5 }, shadowOpacity: 0.06, shadowRadius: 10, elevation: 2, overflow: 'hidden' },
   categoryHitArea: { position: 'absolute' },
-  sectionHeader: { flexDirection: 'row', alignItems: 'center' },
-  sectionTitle: { color: '#C28B3D', fontWeight: '700' },
-  sectionSubtitle: { color: '#CE9C4E', marginLeft: 2 },
-  sectionActionPress: { marginLeft: 'auto', height: '100%', justifyContent: 'center' },
-  sectionAction: { color: '#614545' },
+  headerActionHitArea: { position: 'absolute' },
   drinkCard: { position: 'absolute', overflow: 'hidden' },
   drinkName: { position: 'absolute', color: '#B06A39', fontWeight: '700' },
   drinkDetail: { position: 'absolute', color: '#FFFFFF' },
