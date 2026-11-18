@@ -1,0 +1,22 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="321" height="22" viewBox="0 0 321 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 11801">
+<path id="Vector 1050" d="M2 17H319" stroke-width="4" stroke-linecap="round" stroke="url(#paint0_linear_0_137)"/>
+<circle id="Ellipse 944" cx="34" cy="17" r="5" fill="white"/>
+<circle id="Ellipse 945" cx="98" cy="17" r="5" fill="white"/>
+<circle id="Ellipse 946" cx="161" cy="17" r="5" fill="white"/>
+<rect id="Rectangle 3059" x="29.7578" y="17" width="6" height="6" rx="1" transform="rotate(-45 29.7578 17)" fill="#F2C94F"/>
+<rect id="Rectangle 3060" x="93.7578" y="17.2422" width="6" height="6" rx="1" transform="rotate(-45 93.7578 17.2422)" fill="#F4D36E"/>
+<rect id="Rectangle 3061" x="156.758" y="17.2422" width="6" height="6" rx="1" transform="rotate(-45 156.758 17.2422)" fill="#F6DE91"/>
+<path id="Polygon 63" d="M34 0L38.3301 15H29.6699L34 0Z" fill="url(#paint1_linear_0_137)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_137" x1="2" y1="17.5" x2="319" y2="17.5" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EFC134"/>
+<stop offset="1" stop-color="#EFC134" stop-opacity="0.1"/>
+</linearGradient>
+<linearGradient id="paint1_linear_0_137" x1="34" y1="0" x2="34" y2="15" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F1C84D"/>
+<stop offset="1" stop-color="#F1C84B" stop-opacity="0.07"/>
+</linearGradient>
+</defs>
+</svg>

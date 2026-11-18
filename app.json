@@ -6,8 +6,33 @@
     "orientation": "portrait",
     "scheme": "wantang",
     "userInterfaceStyle": "light",
-    "plugins": ["expo-router"],
+    "icon": "./assets/branding/app-icon.png",
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#FFFFFF",
+          "image": "./assets/branding/startup-mark.png",
+          "imageWidth": 160,
+          "resizeMode": "contain",
+          "android": {
+            "drawable": {
+              "icon": "./assets/branding/android-splash-placeholder.xml"
+            }
+          }
+        }
+      ]
+    ],
     "experiments": { "typedRoutes": true },
+    "android": {
+      "package": "com.wantang.shixu",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/branding/adaptive-foreground.png",
+        "backgroundColor": "#F8E8CA"
+      }
+    },
     "androidStatusBar": {
       "backgroundColor": "#71400B",
       "barStyle": "light-content",

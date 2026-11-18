@@ -6,15 +6,14 @@ import { useCallback } from 'react';
 import {
   Alert,
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   useWindowDimensions,
   View,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { bottomTabs } from '@/data/home';
+import { BottomNavigation } from '@/components/BottomNavigation';
+import { MainPageScroll } from '@/components/MainPageScroll';
 
 // React Native style numbers are density-independent pixels (dp), not screen pixels.
 const DESIGN_WIDTH_DP = 370;
@@ -60,11 +59,9 @@ function clamp(value: number, minimum: number, maximum: number) {
 
 export default function NotesScreen() {
   const window = useWindowDimensions();
-  const insets = useSafeAreaInsets();
   const width = Math.min(window.width, MAX_CONTENT_WIDTH_DP);
   const scale = width / DESIGN_WIDTH_DP;
   const fontScale = clamp(scale, 0.92, 1.12);
-  const navHeight = 78 * scale + insets.bottom;
 
   return (
     <View style={styles.screen}>
@@ -74,24 +71,14 @@ export default function NotesScreen() {
         locations={[0, 1]}
         style={[styles.page, { width }]}
       >
-        <ScrollView
-          bounces={false}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            minHeight: DESIGN_BODY_HEIGHT_DP * scale + insets.top,
-            paddingTop: insets.top,
-            paddingBottom: navHeight,
-          }}
-        >
-          <View style={{ height: DESIGN_BODY_HEIGHT_DP * scale }}>
-            <PlanSelector scale={scale} fontScale={fontScale} />
-            <JournalEntry scale={scale} fontScale={fontScale} />
-            <ProgressCard scale={scale} fontScale={fontScale} />
-            <WeeklyMemory scale={scale} fontScale={fontScale} />
-            <TodayMoment scale={scale} fontScale={fontScale} />
-          </View>
-        </ScrollView>
-        <BottomNavigation scale={scale} fontScale={fontScale} bottomInset={insets.bottom} />
+        <MainPageScroll scale={scale} topGap={68} bodyHeight={DESIGN_BODY_HEIGHT_DP}>
+          <PlanSelector scale={scale} fontScale={fontScale} />
+          <JournalEntry scale={scale} fontScale={fontScale} />
+          <ProgressCard scale={scale} fontScale={fontScale} />
+          <WeeklyMemory scale={scale} fontScale={fontScale} />
+          <TodayMoment scale={scale} fontScale={fontScale} />
+        </MainPageScroll>
+        <BottomNavigation currentTab="notes" scale={scale} fontScale={fontScale} />
       </LinearGradient>
     </View>
   );
@@ -119,14 +106,15 @@ function PlanSelector({ scale, fontScale }: ScaleProps) {
 }
 
 function JournalEntry({ scale }: ScaleProps) {
-  const planned = useCallback(() => Alert.alert('手札记录', '功能规划中'), []);
   const router = useRouter();
 
   return (
     <View style={[styles.absolute, { left: 18 * scale, top: 136 * scale, width: 335 * scale, height: 125 * scale }]}>
       <Pressable
         style={[styles.journalArtwork, { width: 94 * scale, height: 125 * scale }]}
-        onPress={planned}
+        onPress={() => router.push('/journal/flavor')}
+        accessibilityRole="button"
+        accessibilityLabel="手札记录"
       >
         <Image source={journalArtwork} style={StyleSheet.absoluteFill} contentFit="fill" />
         <Image
@@ -163,6 +151,7 @@ function JournalEntry({ scale }: ScaleProps) {
 
 function ProgressCard({ scale }: ScaleProps) {
   const planned = useCallback(() => Alert.alert('进度卡片', '功能规划中'), []);
+  const router = useRouter();
 
   return (
     <View style={[styles.absolute, { left: 9 * scale, top: 275 * scale, width: 353 * scale, height: 142 * scale }]}>
@@ -178,7 +167,7 @@ function ProgressCard({ scale }: ScaleProps) {
         style={{ position: 'absolute', left: 20 * scale, bottom: 8 * scale, width: 90 * scale, height: 28 * scale }}
       />
       <Pressable
-        onPress={planned}
+        onPress={() => router.push('/membership-renewal')}
         accessibilityRole="button"
         accessibilityLabel="查看进度"
         style={{ position: 'absolute', right: 18 * scale, bottom: 8 * scale, width: 80 * scale, height: 28 * scale }}
@@ -229,6 +218,7 @@ function WeeklyMemory({ scale, fontScale }: ScaleProps) {
 
 function TodayMoment({ scale, fontScale }: ScaleProps) {
   const planned = useCallback(() => Alert.alert('今日暖饮时刻', '功能规划中'), []);
+  const router = useRouter();
 
   return (
     <View style={[styles.card, styles.absolute, { left: 9 * scale, top: 573 * scale, width: 353 * scale, height: 161 * scale, borderRadius: 8 * scale }]}>
@@ -244,7 +234,7 @@ function TodayMoment({ scale, fontScale }: ScaleProps) {
           <Image source={steamCircle} style={StyleSheet.absoluteFill} contentFit="contain" />
           <Image source={steamIcon} style={{ position: 'absolute', left: 4.5 * scale, top: 5.5 * scale, width: 15 * scale, height: 12.9 * scale }} contentFit="contain" />
         </View>
-        <Pressable onPress={planned} style={[styles.brewButton, { left: 17 * scale, bottom: 15 * scale, width: 301 * scale, height: 28 * scale, borderRadius: 14 * scale }]}>
+        <Pressable accessibilityRole="button" accessibilityLabel="查看冲泡搭配方案" onPress={() => router.push('/brew-pairing')} style={[styles.brewButton, { left: 17 * scale, bottom: 15 * scale, width: 301 * scale, height: 28 * scale, borderRadius: 14 * scale }]}>
           <LinearGradient colors={['#A64A39', '#731813']} start={{ x: 0, y: 0.5 }} end={{ x: 1, y: 0.5 }} style={StyleSheet.absoluteFill} />
           <Text style={[styles.brewButtonText, { fontSize: 10 * fontScale }]}>查看冲泡搭配方案</Text>
         </Pressable>
@@ -270,50 +260,6 @@ function SectionTitle({ icon, title, subtitle, action, onAction, scale, fontScal
           <Text style={[styles.sectionAction, { fontSize: 8 * fontScale }]}>{action}</Text>
         </Pressable>
       ) : null}
-    </View>
-  );
-}
-
-function BottomNavigation({ scale, fontScale, bottomInset }: ScaleProps & { bottomInset: number }) {
-  const router = useRouter();
-  const onTabPress = useCallback((id: string, label: string) => {
-    if (id === 'notes') return;
-    if (id === 'home') {
-      router.replace('/');
-      return;
-    }
-    if (id === 'gifts') {
-      router.replace('/gifts');
-      return;
-    }
-    if (id === 'culture') {
-      router.replace('/scenery');
-      return;
-    }
-    if (id === 'profile') {
-      router.replace('/profile');
-      return;
-    }
-    Alert.alert(label, '功能规划中');
-  }, [router]);
-
-  return (
-    <View style={[styles.bottomNav, { height: 78 * scale + bottomInset, paddingBottom: bottomInset }]}>
-      {bottomTabs.map((tab) => {
-        const selected = tab.id === 'notes';
-        return (
-          <Pressable
-            key={tab.id}
-            style={styles.bottomTab}
-            onPress={() => onTabPress(tab.id, tab.label)}
-            accessibilityRole="tab"
-            accessibilityState={{ selected }}
-          >
-            <Image source={tab.image} style={{ width: 40 * scale, height: 40 * scale }} contentFit="contain" />
-            <Text style={[styles.bottomLabel, { fontSize: 9.4 * fontScale, color: selected ? '#68201B' : '#9D8B82', fontWeight: selected ? '700' : '400' }]}>{tab.label}</Text>
-          </Pressable>
-        );
-      })}
     </View>
   );
 }
@@ -360,7 +306,4 @@ const styles = StyleSheet.create({
   todayDescription: { position: 'absolute', color: '#9D7D6D' },
   brewButton: { position: 'absolute', overflow: 'hidden', alignItems: 'center', justifyContent: 'center' },
   brewButtonText: { color: '#FFF8EE', fontWeight: '700' },
-  bottomNav: { position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 20, flexDirection: 'row', alignItems: 'flex-start', borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: '#E6D9D1', backgroundColor: '#FFFFFF' },
-  bottomTab: { flex: 1, alignItems: 'center', justifyContent: 'flex-start' },
-  bottomLabel: { marginTop: -5 },
 });

@@ -22,7 +22,6 @@ export type Product = {
   image: number;
   imagePosition: ImageContentPosition;
 };
-export type BottomTab = { id: string; label: string; image: number };
 
 export const categories: Category[] = [
   { id: 'recipes', label: '红糖食谱', image: require('../../assets/figma/home/a4f73.png') },
@@ -94,14 +93,6 @@ export const products: Product[] = [
     image: require('../../assets/figma/home/64a20.png'),
     imagePosition: { left: '0%', top: '0%' },
   },
-];
-
-export const bottomTabs: BottomTab[] = [
-  { id: 'home', label: '首页', image: require('../../assets/figma/home/37cc5.png') },
-  { id: 'notes', label: '手札', image: require('../../assets/figma/home/d95b8.png') },
-  { id: 'gifts', label: '礼事', image: require('../../assets/figma/home/620bb.png') },
-  { id: 'culture', label: '风物', image: require('../../assets/figma/home/425a6.png') },
-  { id: 'profile', label: '我的', image: require('../../assets/figma/home/7fa70.png') },
 ];
 
 export const storySlides = [

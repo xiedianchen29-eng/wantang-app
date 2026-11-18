@@ -6,19 +6,19 @@ import {
   type ListRenderItemInfo,
   type NativeScrollEvent,
   type NativeSyntheticEvent,
+  Platform,
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   useWindowDimensions,
   View,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useRouter } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 
+import { BottomNavigation } from '@/components/BottomNavigation';
+import { MainPageScroll } from '@/components/MainPageScroll';
 import {
-  bottomTabs,
   categories,
   type Category,
   products,
@@ -31,8 +31,19 @@ const DESIGN_WIDTH_DP = 370;
 const MAX_CONTENT_WIDTH = 430;
 const AUTOPLAY_MS = 4000;
 
-const heroBackground = require('../../assets/figma/home/home-hero-background.png');
+// Android's SVG renderer needs the embedded photo layers and masks precomposited.
+const heroBackground = Platform.OS === 'android'
+  ? require('../../assets/figma/home/home-hero-background-android.svg')
+  : require('../../assets/figma/home/home-hero-background.svg');
 const categoryCircle = require('../../assets/figma/home/43334.svg');
+const todayWarmthProducts = Platform.OS === 'android'
+  ? require('../../assets/figma/home/today-warmth-products-android.svg')
+  : require('../../assets/figma/home/today-warmth-products.svg');
+const todayWarmthCardPositions = [
+  { left: 0, plusCenter: 96.15 },
+  { left: 117, plusCenter: 214.2 },
+  { left: 234, plusCenter: 331.2 },
+] as const;
 
 type StorySlide = (typeof storySlides)[number];
 
@@ -42,21 +53,15 @@ function clamp(value: number, minimum: number, maximum: number) {
 
 export default function HomeScreen() {
   const window = useWindowDimensions();
-  const insets = useSafeAreaInsets();
   const contentWidth = Math.min(window.width, MAX_CONTENT_WIDTH);
   const scale = contentWidth / DESIGN_WIDTH_DP;
   const fontScale = clamp(scale, 0.92, 1.12);
-  const navHeight = 64 * scale + insets.bottom;
 
   return (
     <View style={styles.screen}>
-      <View style={{ height: insets.top, backgroundColor: colors.heroBrown }} />
+      <StatusBar style="light" />
       <View style={[styles.centeredColumn, { width: contentWidth }]}>
-        <ScrollView
-          bounces={false}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: navHeight + 12 }}
-        >
+        <MainPageScroll scale={scale} topGap={55} style={styles.scroll}>
           <Hero scale={scale} />
           <View
             style={[
@@ -70,8 +75,8 @@ export default function HomeScreen() {
               <Products scale={scale} fontScale={fontScale} />
             </View>
           </View>
-        </ScrollView>
-        <BottomNavigation scale={scale} fontScale={fontScale} bottomInset={insets.bottom} />
+        </MainPageScroll>
+        <BottomNavigation currentTab="home" scale={scale} fontScale={fontScale} />
       </View>
     </View>
   );
@@ -314,58 +319,19 @@ function Products({ scale, fontScale }: { scale: number; fontScale: number }) {
   return (
     <View>
       <SectionHeader title="今日暖意" action="查看全部 ›" scale={scale} fontScale={fontScale} />
-      <View style={[styles.productRow, { paddingHorizontal: 14 * scale, gap: 8 * scale }]}>
-        {products.map((product) => (
-          <View
-            key={product.id}
-            style={[
-              styles.productCard,
-              {
-                width: 109 * scale,
-                height: 124 * scale,
-                borderRadius: 8 * scale,
-                padding: 7 * scale,
-              },
-            ]}
-          >
-            <Image
-              source={product.image}
-              style={{ width: 95 * scale, height: 64 * scale, borderRadius: 4 * scale }}
-              contentFit="cover"
-              contentPosition={product.imagePosition}
-            />
-            <View style={[styles.productTitleRow, { marginTop: 3 * scale }]}>
-              <Text numberOfLines={1} style={[styles.productName, { fontSize: 7 * fontScale }]}>
-                {product.name}
-              </Text>
-              <Text style={[styles.productMeta, { fontSize: 6.3 * fontScale }]}>暖饮灵感</Text>
+      <View style={[styles.productRow, { width: 343 * scale, height: 124 * scale }]}>
+        <Image source={todayWarmthProducts} style={StyleSheet.absoluteFill} contentFit="contain" pointerEvents="none" accessible={false} />
+        {products.slice(0, todayWarmthCardPositions.length).map((product, index) => {
+          const { left, plusCenter } = todayWarmthCardPositions[index];
+          return (
+            <View key={product.id} pointerEvents="box-none" style={[styles.productOverlay, { left: left * scale, width: 109 * scale }]}>
+              <View accessible accessibilityLabel={`${product.name}，${product.price}元`} pointerEvents="none"
+                style={{ height: 100 * scale }} />
+              <Pressable accessibilityRole="button" accessibilityLabel={`将${product.name}加入购物车`} onPress={() => addToCart(product.name)}
+                style={[styles.productAddHitArea, { left: (plusCenter - left - 11) * scale, top: 98 * scale, width: 22 * scale, height: 24 * scale }]} />
             </View>
-            <View style={[styles.tagRow, { marginTop: 3 * scale, gap: 3 * scale }]}>
-              <Text style={[styles.productTag, { fontSize: 4.1 * fontScale }]}>一杯暖意，刚好入秋</Text>
-              <Text style={[styles.productTag, { fontSize: 4.1 * fontScale }]}>有机食品</Text>
-            </View>
-            <Text style={[styles.promoCopy, { fontSize: 3.7 * fontScale, marginTop: 3 * scale }]}>
-              限时优惠，补贴后到手价
-            </Text>
-            <View style={styles.productFooter}>
-              <View style={styles.priceRow}>
-                <Text style={[styles.currency, { fontSize: 11.4 * fontScale }]}>¥</Text>
-                <Text style={[styles.price, { fontSize: 7.7 * fontScale }]}>{product.price}</Text>
-              </View>
-              <Pressable
-                style={[
-                  styles.addButton,
-                  { width: 13 * scale, height: 13 * scale, borderRadius: 6.5 * scale },
-                ]}
-                onPress={() => addToCart(product.name)}
-                accessibilityRole="button"
-                accessibilityLabel={`将${product.name}加入购物车`}
-              >
-                <Text style={[styles.addButtonText, { fontSize: 10 * fontScale }]}>+</Text>
-              </Pressable>
-            </View>
-          </View>
-        ))}
+          );
+        })}
       </View>
     </View>
   );
@@ -390,78 +356,6 @@ function SectionHeader({
   );
 }
 
-function BottomNavigation({
-  scale,
-  fontScale,
-  bottomInset,
-}: {
-  scale: number;
-  fontScale: number;
-  bottomInset: number;
-}) {
-  const router = useRouter();
-  const onTabPress = useCallback((id: string, label: string) => {
-    if (id === 'home') return;
-    if (id === 'notes') {
-      router.replace('/notes');
-      return;
-    }
-    if (id === 'gifts') {
-      router.replace('/gifts');
-      return;
-    }
-    if (id === 'culture') {
-      router.replace('/scenery');
-      return;
-    }
-    if (id === 'profile') {
-      router.replace('/profile');
-      return;
-    }
-    Alert.alert(label, '功能规划中');
-  }, [router]);
-
-  return (
-    <View
-      style={[
-        styles.bottomNav,
-        { height: 64 * scale + bottomInset, paddingBottom: bottomInset },
-      ]}
-    >
-      {bottomTabs.map((tab) => {
-        const selected = tab.id === 'home';
-        return (
-          <Pressable
-            key={tab.id}
-            style={styles.bottomTab}
-            onPress={() => onTabPress(tab.id, tab.label)}
-            accessibilityRole="tab"
-            accessibilityState={{ selected }}
-          >
-            <Image
-              source={tab.image}
-              style={{ width: 40 * scale, height: 40 * scale }}
-              contentFit="contain"
-            />
-            <Text
-              style={[
-                styles.bottomLabel,
-                {
-                  fontSize: 9.4 * fontScale,
-                  color: selected ? '#68201B' : '#9D8B82',
-                  fontWeight: selected ? '700' : '400',
-                },
-              ]}
-            >
-              {tab.label}
-            </Text>
-          </Pressable>
-        );
-      })}
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
@@ -471,8 +365,9 @@ const styles = StyleSheet.create({
   centeredColumn: {
     flex: 1,
     alignSelf: 'center',
-    backgroundColor: colors.canvas,
+    backgroundColor: colors.heroBrown,
   },
+  scroll: { backgroundColor: colors.canvas },
   hero: {
     position: 'relative',
     overflow: 'hidden',
@@ -516,48 +411,7 @@ const styles = StyleSheet.create({
   storyFade: { position: 'absolute', top: 0, zIndex: 2 },
   dots: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6 },
   dot: {},
-  productRow: { flexDirection: 'row', paddingBottom: 10 },
-  productCard: { backgroundColor: colors.brandBrown },
-  productTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  productName: { maxWidth: '64%', color: colors.white, fontWeight: '700' },
-  productMeta: { color: '#DEC7AF' },
-  tagRow: { flexDirection: 'row' },
-  productTag: {
-    overflow: 'hidden',
-    borderRadius: 2,
-    paddingHorizontal: 3,
-    paddingVertical: 1,
-    color: colors.brandRed,
-    backgroundColor: colors.tag,
-  },
-  promoCopy: { color: '#DEC7AF', textAlign: 'right' },
-  productFooter: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
-  },
-  priceRow: { flexDirection: 'row', alignItems: 'flex-end' },
-  currency: { color: colors.white, lineHeight: 13 },
-  price: { color: colors.white, lineHeight: 11 },
-  addButton: { alignItems: 'center', justifyContent: 'center', backgroundColor: colors.white },
-  addButtonText: { color: colors.brandBrown, lineHeight: 12 },
-  bottomNav: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 20,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: colors.navBorder,
-    backgroundColor: colors.white,
-  },
-  bottomTab: { flex: 1, alignItems: 'center', justifyContent: 'flex-start' },
-  bottomLabel: { marginTop: -5 },
+  productRow: { alignSelf: 'center', marginBottom: 10 },
+  productOverlay: { position: 'absolute', top: 0, bottom: 0 },
+  productAddHitArea: { position: 'absolute' },
 });

@@ -6,20 +6,21 @@ import { useCallback, useState } from 'react';
 import {
   Alert,
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   useWindowDimensions,
   View,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { bottomTabs } from '@/data/home';
+import { BottomNavigation } from '@/components/BottomNavigation';
+import { MainPageScroll } from '@/components/MainPageScroll';
 
 // React Native style numbers are density-independent pixels (dp), not screen pixels.
 const DESIGN_WIDTH_DP = 370;
-const DESIGN_BODY_HEIGHT_DP = 744;
+const GIFT_LIST_TOP_DP = 539;
+const GIFT_LIST_HEIGHT_DP = 322;
+const DESIGN_BODY_HEIGHT_DP = GIFT_LIST_TOP_DP + GIFT_LIST_HEIGHT_DP;
 const MAX_CONTENT_WIDTH_DP = 430;
 
 const occasionBoard = require('../../assets/figma/gifts/occasion-board.png');
@@ -38,29 +39,21 @@ function clamp(value: number, minimum: number, maximum: number) {
 
 export default function GiftsScreen() {
   const window = useWindowDimensions();
-  const insets = useSafeAreaInsets();
   const width = Math.min(window.width, MAX_CONTENT_WIDTH_DP);
   const scale = width / DESIGN_WIDTH_DP;
   const fontScale = clamp(scale, 0.92, 1.12);
-  const navHeight = 78 * scale + insets.bottom;
 
   return (
     <View style={styles.screen}>
       <StatusBar style="dark" />
       <LinearGradient colors={['#FCFAF8', '#FFF5E4']} style={[styles.page, { width }]}>
-        <ScrollView
-          bounces={false}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ minHeight: DESIGN_BODY_HEIGHT_DP * scale + insets.top, paddingTop: insets.top, paddingBottom: navHeight }}
-        >
-          <View style={{ height: DESIGN_BODY_HEIGHT_DP * scale }}>
-            <GiftSearch scale={scale} fontScale={fontScale} />
-            <GiftCategories scale={scale} fontScale={fontScale} />
-            <SeasonalDrinks scale={scale} fontScale={fontScale} />
-            <GiftList scale={scale} fontScale={fontScale} />
-          </View>
-        </ScrollView>
-        <BottomNavigation scale={scale} fontScale={fontScale} bottomInset={insets.bottom} />
+        <MainPageScroll scale={scale} topGap={60} bodyHeight={DESIGN_BODY_HEIGHT_DP}>
+          <GiftSearch scale={scale} fontScale={fontScale} />
+          <GiftCategories scale={scale} fontScale={fontScale} />
+          <SeasonalDrinks scale={scale} fontScale={fontScale} />
+          <GiftList scale={scale} fontScale={fontScale} />
+        </MainPageScroll>
+        <BottomNavigation currentTab="gifts" scale={scale} fontScale={fontScale} />
       </LinearGradient>
     </View>
   );
@@ -131,18 +124,20 @@ function SeasonalDrinks({ scale, fontScale }: ScaleProps) {
 }
 
 function GiftList({ scale, fontScale }: ScaleProps) {
+  const router = useRouter();
   const planned = useCallback((name: string) => Alert.alert(name, '功能规划中'), []);
   const gifts = [
-    { name: '金沙唐韵礼盒', price: '128', image: tangYunGift, product: codonopsisGift },
-    { name: '红糖公主礼盒', price: '40.8', image: princessGift },
+    { name: '金沙唐韵礼盒', price: '128', image: tangYunGift, product: codonopsisGift, open: () => router.push('/gifts/tang-yun') },
+    { name: '红糖公主礼盒', price: '40.8', image: princessGift, open: () => planned('红糖公主礼盒') },
   ];
 
   return (
-    <View style={[styles.card, styles.absolute, { left: 9 * scale, top: 539 * scale, width: 353 * scale, height: 283 * scale, borderRadius: 8 * scale }]}>
+    <View style={[styles.card, styles.absolute, { left: 9 * scale, top: GIFT_LIST_TOP_DP * scale, width: 353 * scale, height: GIFT_LIST_HEIGHT_DP * scale, borderRadius: 8 * scale }]}>
       <Image source={giftListHeader} style={{ position: 'absolute', left: 9 * scale, top: 1 * scale, width: 335 * scale, height: 24 * scale }} contentFit="contain" pointerEvents="none" />
       <Pressable onPress={() => planned('岁时送礼')} style={[styles.headerActionHitArea, { right: 8 * scale, top: 0, width: 56 * scale, height: 33 * scale }]} accessibilityRole="button" accessibilityLabel="礼盒详情" />
       {gifts.map((gift, index) => (
-        <Pressable key={gift.name} onPress={() => planned(gift.name)} style={[styles.giftRow, { left: 11 * scale, top: (38 + index * 97) * scale, width: 335 * scale, height: 89 * scale, borderRadius: 12 * scale }]}>
+        <Pressable key={gift.name} accessibilityRole="button" accessibilityLabel={gift.name} onPress={gift.open}
+          style={[styles.giftRow, { left: 11 * scale, top: (38 + index * 97) * scale, width: 335 * scale, height: 89 * scale, borderRadius: 12 * scale }]}>
           <LinearGradient colors={['#F5E2D0', '#E7CBB0']} style={StyleSheet.absoluteFill} />
           <View style={[styles.giftImage, { left: 7 * scale, top: 8 * scale, width: 128 * scale, height: 73 * scale, borderRadius: 8 * scale }]}>
             <Image source={gift.image} style={StyleSheet.absoluteFill} contentFit="cover" contentPosition={{ left: index === 0 ? '52%' : '62%', top: index === 0 ? '48%' : '45%' }} />
@@ -156,32 +151,6 @@ function GiftList({ scale, fontScale }: ScaleProps) {
           <Text style={[styles.giftAction, { right: 15 * scale, bottom: 12 * scale, fontSize: 8 * fontScale }]}>点击了解 ›</Text>
         </Pressable>
       ))}
-    </View>
-  );
-}
-
-function BottomNavigation({ scale, fontScale, bottomInset }: ScaleProps & { bottomInset: number }) {
-  const router = useRouter();
-  const onTabPress = useCallback((id: string, label: string) => {
-    if (id === 'gifts') return;
-    if (id === 'home') { router.replace('/'); return; }
-    if (id === 'notes') { router.replace('/notes'); return; }
-    if (id === 'culture') { router.replace('/scenery'); return; }
-    if (id === 'profile') { router.replace('/profile'); return; }
-    Alert.alert(label, '功能规划中');
-  }, [router]);
-
-  return (
-    <View style={[styles.bottomNav, { height: 78 * scale + bottomInset, paddingBottom: bottomInset }]}>
-      {bottomTabs.map((tab) => {
-        const selected = tab.id === 'gifts';
-        return (
-          <Pressable key={tab.id} style={styles.bottomTab} onPress={() => onTabPress(tab.id, tab.label)} accessibilityRole="tab" accessibilityState={{ selected }}>
-            <Image source={tab.image} style={{ width: 40 * scale, height: 40 * scale }} contentFit="contain" />
-            <Text style={[styles.bottomLabel, { fontSize: 9.4 * fontScale, color: selected ? '#731813' : '#9D8B82', fontWeight: selected ? '700' : '400' }]}>{tab.label}</Text>
-          </Pressable>
-        );
-      })}
     </View>
   );
 }
@@ -214,7 +183,4 @@ const styles = StyleSheet.create({
   giftPrice: { position: 'absolute', color: '#8C2E25' },
   giftOffer: { position: 'absolute', color: '#8C2E25' },
   giftAction: { position: 'absolute', color: '#8C2E25' },
-  bottomNav: { position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 20, flexDirection: 'row', alignItems: 'flex-start', backgroundColor: '#FFFDF9', borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: '#E6D9D1' },
-  bottomTab: { flex: 1, alignItems: 'center', justifyContent: 'flex-start' },
-  bottomLabel: { marginTop: -5 },
 });

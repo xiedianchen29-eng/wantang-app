@@ -3,19 +3,23 @@ import { StatusBar } from 'expo-status-bar';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { JournalRecordScreen } from '@/components/JournalRecordScreen';
+
 // React Native style numbers are density-independent pixels (dp), not screen pixels.
 
 const titles: Record<string, string> = {
-  flavor: '口味手札',
   scene: '场景手札',
   recipe: '食谱手札',
 };
 
-export default function JournalPlaceholderScreen() {
+export default function JournalEntryScreen() {
+  const { entry } = useLocalSearchParams<{ entry: string }>();
+  return entry === 'flavor' ? <JournalRecordScreen /> : <JournalPlaceholderScreen title={titles[entry] ?? '手札'} />;
+}
+
+function JournalPlaceholderScreen({ title }: { title: string }) {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { entry } = useLocalSearchParams<{ entry: string }>();
-  const title = titles[entry] ?? '手札';
 
   return (
     <View style={[styles.screen, { paddingTop: insets.top + 24, paddingBottom: insets.bottom + 24 }]}>
