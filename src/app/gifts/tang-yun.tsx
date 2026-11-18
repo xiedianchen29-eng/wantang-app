@@ -12,10 +12,10 @@ import { TangYunStylePicker } from '@/components/TangYunStylePicker';
 const art = {
   pack: require('../../../assets/figma/gifts/0c53a.png'),
   logo: require('../../../assets/figma/home/64b17.png'),
-  sugarBowl: require('../../../assets/figma/home/b4262.png'),
+  sugarBowl: require('../../../assets/figma/home/b4262.jpg'),
   longan: require('../../../assets/figma/home/9f3c5.png'),
   ginger: require('../../../assets/figma/home/ee677.png'),
-  sugarBlocks: require('../../../assets/figma/home/64a20.png'),
+  sugarBlocks: require('../../../assets/figma/home/64a20.jpg'),
   activeTab: require('../../../assets/figma/profile/d81c3.svg'),
   toolbarCircle: require('../../../assets/figma/journal-plan/toolbar-circle.svg'),
   toolbarShare: require('../../../assets/figma/journal-plan/share.svg'),

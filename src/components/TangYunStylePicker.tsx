@@ -9,10 +9,10 @@ const art = {
 };
 
 const options = [
-  { name: '红糖块', index: 3, source: require('../../assets/figma/home/b4262.png'), crop: [0, -57.96, 59, 103.97] },
+  { name: '红糖块', index: 3, source: require('../../assets/figma/home/b4262.jpg'), crop: [0, -57.96, 59, 103.97] },
   { name: '桂圆红枣', index: 4, source: require('../../assets/figma/home/9f3c5.png'), crop: [-0.06, -46.98, 59.11, 89.95] },
   { name: '姜枣红糖', index: 5, source: require('../../assets/figma/tang-yun-detail/ginger-thumbnail.png'), crop: [0, -7, 59, 45] },
-  { name: '小碗红糖', index: 6, source: require('../../assets/figma/home/64a20.png'), crop: [-73.32, -36.7, 144.8, 192.66] },
+  { name: '小碗红糖', index: 6, source: require('../../assets/figma/home/64a20.jpg'), crop: [-73.32, -36.7, 144.8, 192.66] },
   { name: '礼盒包装', index: 2, source: require('../../assets/figma/tang-yun-detail/dark-photo.png'), crop: [-17.12, -1.01, 89.21, 73.04] },
   { name: '开盒展示', index: 0, source: require('../../assets/figma/tang-yun-detail/gift-thumbnail.png'), crop: [0, -3, 59, 39] },
 ] as const;

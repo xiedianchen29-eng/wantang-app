@@ -32,7 +32,7 @@ const art = {
   nourish: require('../../../assets/figma/journal-start/nourish-icon.svg'),
   dateTea: require('../../../assets/figma/journal-start/guide-date.png'),
   coffee: require('../../../assets/figma/journal-start/guide-coffee.png'),
-  threeSugars: require('../../../assets/figma/journal-start/three-sugars.png'),
+  threeSugars: require('../../../assets/figma/journal-start/three-sugars.jpg'),
 };
 
 type Crop = readonly [left: number, top: number, width: number, height: number];

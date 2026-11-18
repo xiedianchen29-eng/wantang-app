@@ -47,14 +47,14 @@ type Tutorial = {
   quote?: boolean;
 };
 
-const buns: Tutorial = { source: require('../../assets/figma/journal-record/steamed-buns.png'), title: '零失败！红糖红枣馒头教程', tag: '高分菜谱', likes: 126, saves: 52, crop: [-2, -12, 163, 163], height: 136 };
-const balls: Tutorial = { source: require('../../assets/figma/journal-record/rice-balls.png'), title: '红糖糯米小圆子', tag: '“爱吃红糖的一定要做”', likes: 110, saves: 32, crop: [-2, -12, 176, 117], height: 100, quote: true };
-const cakes: Tutorial = { source: require('../../assets/figma/journal-record/crispy-cakes.png'), title: '红糖糍粑 简易教程', tag: '多人重复做', likes: 324, saves: 78, crop: [-1, -4, 167, 167], height: 163 };
-const sago: Tutorial = { ...buns, source: require('../../assets/figma/journal-record/sago.png'), crop: [-11, -11, 186, 248], height: 179 };
-const tea: Tutorial = { source: require('../../assets/figma/journal-record/red-date-tea.png'), title: '红糖红枣茶', tag: '健康养身', likes: 35, saves: 11, crop: [0, -11, 161, 121], height: 100 };
-const angelica: Tutorial = { source: require('../../assets/figma/journal-record/angelica-tea.png'), title: '红糖红枣当归茶', tag: '“工作生活来一包”', likes: 29, saves: 14, crop: [-61, -20, 234, 156], height: 136, quote: true };
-const riceCake: Tutorial = { ...cakes, source: require('../../assets/figma/journal-record/rice-cake.png'), title: '红糖年糕教程 不用烤箱用平底锅也能炸', tag: '高分菜谱', crop: [-13, -2, 186, 148], height: 136 };
-const roll: Tutorial = { ...buns, source: require('../../assets/figma/journal-record/sugar-roll.png'), title: '超好吃的红糖卷教程', likes: 104, saves: 25, crop: [-13, -43, 186, 248], height: 163 };
+const buns: Tutorial = { source: require('../../assets/figma/journal-record/steamed-buns.jpg'), title: '零失败！红糖红枣馒头教程', tag: '高分菜谱', likes: 126, saves: 52, crop: [-2, -12, 163, 163], height: 136 };
+const balls: Tutorial = { source: require('../../assets/figma/journal-record/rice-balls.jpg'), title: '红糖糯米小圆子', tag: '“爱吃红糖的一定要做”', likes: 110, saves: 32, crop: [-2, -12, 176, 117], height: 100, quote: true };
+const cakes: Tutorial = { source: require('../../assets/figma/journal-record/crispy-cakes.jpg'), title: '红糖糍粑 简易教程', tag: '多人重复做', likes: 324, saves: 78, crop: [-1, -4, 167, 167], height: 163 };
+const sago: Tutorial = { ...buns, source: require('../../assets/figma/journal-record/sago.jpg'), crop: [-11, -11, 186, 248], height: 179 };
+const tea: Tutorial = { source: require('../../assets/figma/journal-record/red-date-tea.jpg'), title: '红糖红枣茶', tag: '健康养身', likes: 35, saves: 11, crop: [0, -11, 161, 121], height: 100 };
+const angelica: Tutorial = { source: require('../../assets/figma/journal-record/angelica-tea.jpg'), title: '红糖红枣当归茶', tag: '“工作生活来一包”', likes: 29, saves: 14, crop: [-61, -20, 234, 156], height: 136, quote: true };
+const riceCake: Tutorial = { ...cakes, source: require('../../assets/figma/journal-record/rice-cake.jpg'), title: '红糖年糕教程 不用烤箱用平底锅也能炸', tag: '高分菜谱', crop: [-13, -2, 186, 148], height: 136 };
+const roll: Tutorial = { ...buns, source: require('../../assets/figma/journal-record/sugar-roll.jpg'), title: '超好吃的红糖卷教程', likes: 104, saves: 25, crop: [-13, -43, 186, 248], height: 163 };
 const tutorialColumns = [[buns, cakes, tea, riceCake, cakes, angelica], [balls, sago, angelica, roll, sago, tea]];
 const sections = ['笔记', '视频', '菜谱', '课程'];
 

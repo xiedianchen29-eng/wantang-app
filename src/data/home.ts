@@ -90,7 +90,7 @@ export const products: Product[] = [
     id: 'jarred-sugar',
     name: '罐装巧家红糖',
     price: '40.8',
-    image: require('../../assets/figma/home/64a20.png'),
+    image: require('../../assets/figma/home/64a20.jpg'),
     imagePosition: { left: '0%', top: '0%' },
   },
 ];

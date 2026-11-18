@@ -17,7 +17,7 @@ const art = {
   logotype: require('../../assets/figma/renewal/logo-type.png'),
   heroLeft: require('../../assets/figma/renewal/hero-left.svg'),
   heroRight: require('../../assets/figma/renewal/hero-right.svg'),
-  avatar: require('../../assets/figma/renewal/avatar.png'),
+  avatar: require('../../assets/figma/renewal/avatar.jpg'),
   memberCard: require('../../assets/figma/renewal/member-card.svg'),
   level: require('../../assets/figma/renewal/level.svg'),
   mascot: require('../../assets/figma/renewal/mascot.png'),

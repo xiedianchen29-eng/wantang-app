@@ -4,7 +4,7 @@ export const journalProducts = [
   {
     id: 'blocks',
     title: '巧家万华小碗红糖 块装',
-    source: require('../../assets/figma/journal-start/sugar-blocks.png'),
+    source: require('../../assets/figma/journal-start/sugar-blocks.jpg'),
     crop: [-1, -26, 91, 97],
     tags: ['纯天然有机', '补血养颜'],
     price: 28,
@@ -22,7 +22,7 @@ export const journalProducts = [
   {
     id: 'sugar',
     title: '巧家万华小碗红糖 呵糖 适宜孕妇群体',
-    source: require('../../assets/figma/notes/64a20.png'),
+    source: require('../../assets/figma/notes/64a20.jpg'),
     crop: [-80.42, -131.0, 156.47, 208.7],
     tags: ['纯天然有机', '补血养颜', '暖胃散寒'],
     price: 31,
@@ -40,7 +40,7 @@ export const journalProducts = [
   {
     id: 'three-sugars',
     title: '巧家万华红糖 全套 三款红糖',
-    source: require('../../assets/figma/journal-start/three-sugars.png'),
+    source: require('../../assets/figma/journal-start/three-sugars.jpg'),
     crop: [0, -47.33, 76, 117.3],
     tags: ['纯天然有机', '补血养颜'],
     price: 215,
