@@ -25,6 +25,7 @@ Desktop.ini
 *.swo
 .copilot/
 .codex/
+.edge-profile-cdp/
 
 # Logs and temporary files
 *.log
@@ -35,8 +36,14 @@ temp/
 
 # Dependencies and build output
 node_modules/
+.expo/
+.expo-home/
+.npm-cache/
 build/
 dist/
+dist-web/
+dist-web-*/
+outputs/
 coverage/
 .dart_tool/
 .flutter-plugins
